@@ -57,3 +57,9 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# Visual Studio Code
+.vscode/*
+
+# React Native for Windows
+*.binlog
