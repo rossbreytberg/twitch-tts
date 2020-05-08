@@ -4,13 +4,23 @@
 
 import {createAction} from '@reduxjs/toolkit';
 
-export type SetChannelAction = {
-  type: 'channelName/set',
-  payload: string,
+export type AddMessageAction = {
+  type: 'message/add',
+  payload: {
+    author: string,
+    content: string,
+  },
 };
-export const setChannelName = createAction(
-  'channelName/set',
-  (channelName: string) => ({payload: channelName}),
+export const addMessage = createAction(
+  'message/add',
+  (message: {
+    author: string,
+    authorColor: string,
+    content: string,
+    id: string,
+  }) => ({
+    payload: message,
+  }),
 );
 
 export type AddWordFilterAction = {
@@ -37,4 +47,13 @@ export type RemoveWordFilterAction = {
 export const removeWordFilter = createAction(
   'wordFilter/remove',
   (word: string) => ({payload: word}),
+);
+
+export type SetChannelAction = {
+  type: 'channelName/set',
+  payload: string,
+};
+export const setChannelName = createAction(
+  'channelName/set',
+  (channelName: string) => ({payload: channelName}),
 );
