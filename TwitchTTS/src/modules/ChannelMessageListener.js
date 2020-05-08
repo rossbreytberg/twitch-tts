@@ -65,6 +65,7 @@ function onMessage(
       authorColor: tags['color'],
       content: message,
       id: tags['id'],
+      timestamp: Number(tags['tmi-sent-ts']),
     }),
   );
 }

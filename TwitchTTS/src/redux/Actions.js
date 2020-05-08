@@ -2,26 +2,17 @@
  * @flow
  */
 
+import type {Message} from './Reducers';
+
 import {createAction} from '@reduxjs/toolkit';
 
 export type AddMessageAction = {
   type: 'message/add',
-  payload: {
-    author: string,
-    content: string,
-  },
+  payload: Message,
 };
-export const addMessage = createAction(
-  'message/add',
-  (message: {
-    author: string,
-    authorColor: string,
-    content: string,
-    id: string,
-  }) => ({
-    payload: message,
-  }),
-);
+export const addMessage = createAction('message/add', (message: Message) => ({
+  payload: message,
+}));
 
 export type AddWordFilterAction = {
   type: 'wordFilter/add',

@@ -22,6 +22,7 @@ export type Message = {
   authorColor: string,
   content: string,
   id: string,
+  timestamp: number,
 };
 
 export type State = {
