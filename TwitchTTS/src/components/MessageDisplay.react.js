@@ -9,7 +9,7 @@ import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {messagesSelector} from '../redux/Selectors';
 
-export default () => {
+export default (): React.Node => {
   const messages = useSelector(messagesSelector);
   const reversedMessages = Array.from(messages);
   reversedMessages.reverse();
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   container: {
-    height: '50%',
+    height: 300,
   },
   message: {
     alignItems: 'flex-start',

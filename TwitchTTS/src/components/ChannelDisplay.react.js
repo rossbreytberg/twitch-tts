@@ -3,15 +3,12 @@
  */
 
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {useSelector} from 'react-redux';
+import {Title} from './StyledText.react';
 import {channelNameSelector} from '../redux/Selectors';
 
 export default () => {
   const channelName = useSelector(channelNameSelector);
-  return (
-    <View>
-      <Text>{'Currently Listening To: ' + channelName}</Text>
-    </View>
-  );
+  return <Title>{channelName || 'No Channel Selected'}</Title>;
 };

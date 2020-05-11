@@ -16,6 +16,9 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="ReactPackageProvider.h" />
+    <ClInclude Include="NativeModules\TextToSpeech.h">
+      <Filter>NativeModules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -46,6 +49,9 @@
   <ItemGroup>
     <Filter Include="Assets">
       <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NativeModules">
+      <UniqueIdentifier>{67404707-00ad-4d62-b2a3-04c331d64dc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

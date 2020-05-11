@@ -2,10 +2,14 @@
  * @flow
  */
 
+import {NativeEventEmitter, NativeModules} from 'react-native';
 import tmi from 'tmi.js';
 import {addMessage} from '../redux/Actions';
 import {channelNameSelector} from '../redux/Selectors';
 import Store from '../redux/Store';
+
+const {TextToSpeech} = NativeModules;
+const TextToSpeechEventEmitter = new NativeEventEmitter(TextToSpeech);
 
 type TwitchClient = {
   disconnect: () => Promise<void>,
@@ -17,6 +21,9 @@ let twitchClient: ?TwitchClient = null;
 export function initialize() {
   channelName = channelNameSelector(Store.getState());
   Store.subscribe(onStoreUpdate);
+  TextToSpeechEventEmitter.addListener('OnSpeak', result =>
+    console.log('OnSpeak', result),
+  );
 }
 
 async function onStoreUpdate() {
@@ -52,6 +59,7 @@ function onMessage(
     mod: boolean,
     'room-id': string,
     subscriber: boolean,
+    'tmi-sent-ts': string,
     turbo: boolean,
     'user-id': string,
     username: string,
@@ -59,6 +67,7 @@ function onMessage(
   message: string,
   self: boolean,
 ): void {
+  TextToSpeech.speak(message);
   Store.dispatch(
     addMessage({
       author: tags['display-name'],
