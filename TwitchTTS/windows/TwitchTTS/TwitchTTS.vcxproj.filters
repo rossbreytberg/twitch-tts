@@ -11,6 +11,9 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="ReactPackageProvider.cpp" />
+    <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.cpp">
+      <Filter>NativeComponents\TextToSpeech</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -18,6 +21,12 @@
     <ClInclude Include="ReactPackageProvider.h" />
     <ClInclude Include="NativeModules\TextToSpeech.h">
       <Filter>NativeModules</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechElement.h">
+      <Filter>NativeComponents\TextToSpeech</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.h">
+      <Filter>NativeComponents\TextToSpeech</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +62,12 @@
     <Filter Include="NativeModules">
       <UniqueIdentifier>{67404707-00ad-4d62-b2a3-04c331d64dc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NativeComponents">
+      <UniqueIdentifier>{8beb8c4f-dc13-46e2-aa96-171109b7f8eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NativeComponents\TextToSpeech">
+      <UniqueIdentifier>{cf1e106a-a5c5-4a26-9159-5e310d7cbd6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
@@ -60,5 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="NativeComponents\TextToSpeech\TextToSpeechElement.cpp">
+      <Filter>NativeComponents\TextToSpeech</Filter>
+    </Page>
   </ItemGroup>
 </Project>
