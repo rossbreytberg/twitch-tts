@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 #include "TextToSpeechElement.h"
-
+#include "TextToSpeechElement.g.cpp"
 using namespace winrt;
 
 namespace winrt::TwitchTTS::implementation {

@@ -5,12 +5,18 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
+    <Midl Include="NativeComponents\TextToSpeech\TextToSpeechElement.idl">
+      <Filter>NativeComponents\TextToSpeech</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="ReactPackageProvider.cpp" />
+    <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechElement.cpp">
+      <Filter>NativeComponents\TextToSpeech</Filter>
+    </ClCompile>
     <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.cpp">
       <Filter>NativeComponents\TextToSpeech</Filter>
     </ClCompile>
@@ -60,13 +66,13 @@
       <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
     </Filter>
     <Filter Include="NativeModules">
-      <UniqueIdentifier>{67404707-00ad-4d62-b2a3-04c331d64dc5}</UniqueIdentifier>
+      <UniqueIdentifier>{61f20a75-3150-4a36-93ff-d3a5fdd370bd}</UniqueIdentifier>
     </Filter>
     <Filter Include="NativeComponents">
-      <UniqueIdentifier>{8beb8c4f-dc13-46e2-aa96-171109b7f8eb}</UniqueIdentifier>
+      <UniqueIdentifier>{2baf77e8-2026-4038-a735-91ff76e26a26}</UniqueIdentifier>
     </Filter>
     <Filter Include="NativeComponents\TextToSpeech">
-      <UniqueIdentifier>{cf1e106a-a5c5-4a26-9159-5e310d7cbd6c}</UniqueIdentifier>
+      <UniqueIdentifier>{6342093e-ad5b-49fe-82d1-6e0d0735400b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,10 +81,5 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="NativeComponents\TextToSpeech\TextToSpeechElement.cpp">
-      <Filter>NativeComponents\TextToSpeech</Filter>
-    </Page>
   </ItemGroup>
 </Project>

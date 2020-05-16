@@ -4,7 +4,9 @@
 
 using namespace winrt;
 using namespace winrt::Microsoft::ReactNative;
+using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Foundation::Collections;
+using namespace winrt::Windows::Media::Playback;
 using namespace winrt::Windows::UI::Xaml;
 
 namespace winrt::TwitchTTS::implementation {
@@ -16,18 +18,21 @@ namespace winrt::TwitchTTS::implementation {
     public:
       TextToSpeechViewManager() = default;
 
-    // IViewManager
+      // IViewManager
 
-    hstring Name() noexcept;
+      hstring Name() noexcept;
 
-    FrameworkElement CreateView() noexcept;
+      FrameworkElement CreateView() noexcept;
 
-    // IViewManagerWithNativeProperties
+      // IViewManagerWithNativeProperties
 
-    IMapView<hstring, ViewManagerPropertyType> NativeProps() noexcept;
+      IMapView<hstring, ViewManagerPropertyType> NativeProps() noexcept;
 
-    void UpdateProperties(
-      FrameworkElement const& view,
-      IJSValueReader const& propertyMapReader) noexcept;
+      void UpdateProperties(
+        FrameworkElement const &view,
+        IJSValueReader const &propertyMapReader) noexcept;
+
+    private:
+      IAsyncAction Speak(MediaPlayer const mediaPlayer, hstring const text) noexcept;
   };
 }

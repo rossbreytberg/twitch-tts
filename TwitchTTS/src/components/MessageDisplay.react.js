@@ -5,9 +5,17 @@
 import type {Message} from '../redux/Reducer';
 
 import * as React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {
+  requireNativeComponent,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import {messagesSelector} from '../redux/Selectors';
+
+const TextToSpeech = requireNativeComponent('TextToSpeech');
 
 export default (): React.Node => {
   const messages = useSelector(messagesSelector);
@@ -37,6 +45,7 @@ function renderItem(data: {index: number, item: Message}) {
         <Text>{':'}</Text>
       </View>
       <Text>{content}</Text>
+      <TextToSpeech text={content} />
     </View>
   );
 }
