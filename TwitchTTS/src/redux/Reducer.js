@@ -6,6 +6,7 @@ import type {
   AddMessageAction,
   AddWordFilterAction,
   RemoveWordFilterAction,
+  SetAppStateAction,
   SetChannelAction,
   SetVoiceEnabledAction,
   SetVoiceOptionsAction,
@@ -16,6 +17,7 @@ import {
   addMessage,
   addWordFilter,
   removeWordFilter,
+  setAppState,
   setChannelName,
   setVoiceEnabled,
   setVoiceOptions,
@@ -95,6 +97,9 @@ const Reducer = createReducer(initialState, {
   },
   [removeWordFilter]: (state: State, action: RemoveWordFilterAction): void => {
     delete state.wordFilter[action.payload];
+  },
+  [setAppState]: (state: State, action: SetAppStateAction): State => {
+    return action.payload;
   },
   [setChannelName]: (state: State, action: SetChannelAction): void => {
     state.channelName = action.payload;

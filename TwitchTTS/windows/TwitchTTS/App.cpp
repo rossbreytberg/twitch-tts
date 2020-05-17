@@ -34,6 +34,7 @@ App::App() noexcept
 #endif
 
     PackageProviders().Append(make<ReactPackageProvider>()); // Includes all modules in this project
+    PackageProviders().Append(winrt::ReactNativeAsyncStorage::ReactPackageProvider());
 
     REACT_REGISTER_NATIVE_MODULE_PACKAGES(); //code-gen macro from autolink
 
