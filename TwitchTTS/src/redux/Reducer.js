@@ -3,9 +3,9 @@
  */
 
 import type {
-  AppStateSetAction,
   ChannelNameSetAction,
   MessageAddAction,
+  PersistentStateSetAction,
   VoiceEnabledSetAction,
   VoiceOptionsSetAction,
   WordFilterAddAction,
@@ -17,56 +17,59 @@ import {
   appStateSet,
   channelNameSet,
   messageAdd,
+  persistentStateSet,
   voiceEnabledSet,
   voiceOptionsSet,
   wordFilterAdd,
   wordFilterRemove,
 } from './Actions';
 
-export type Message = {
+export type Message = {|
   authorColor: string,
   authorID: string,
   authorName: string,
   content: string,
   id: string,
   timestamp: number,
-};
+|};
 
 export type VoiceOption = {|
   id: string,
   name: string,
 |};
 
-type VoiceOptionState = VoiceOption & {|
-  enabled: boolean,
-|};
-
-export type State = {|
+// State that will persist across app restarts
+export type PersistentState = {|
   channelName: string,
-  messages: Array<Message>,
-  voices: {
-    assignments: {[userID: string]: string},
-    options: Array<VoiceOptionState>,
-  },
   wordFilter: {[word: string]: string},
 |};
 
+export type State = {|
+  messages: Array<Message>,
+  persistent: PersistentState,
+  voices: {|
+    assignments: {[userID: string]: string},
+    options: VoiceOption & {|
+      enabled: boolean,
+    |},
+  |},
+|};
+
 const initialState: State = {
-  channelName: '',
   messages: [],
+  persistent: {
+    channelName: '',
+    wordFilter: {},
+  },
   voices: {
     assignments: {},
     options: [],
   },
-  wordFilter: {},
 };
 
 const Reducer = createReducer(initialState, {
-  [appStateSet]: (state: State, action: AppStateSetAction): State => {
-    return action.payload;
-  },
   [channelNameSet]: (state: State, action: ChannelNameSetAction): void => {
-    state.channelName = action.payload;
+    state.persistent.channelName = action.payload;
   },
   [messageAdd]: (state: State, action: MessageAddAction): void => {
     // Assign a voice to the author if necessary
@@ -95,6 +98,12 @@ const Reducer = createReducer(initialState, {
     // Then push the message to the message list
     state.messages.push(action.payload);
   },
+  [persistentStateSet]: (
+    state: State,
+    action: PersistentStateSetAction,
+  ): void => {
+    state.persistent = action.payload;
+  },
   [voiceEnabledSet]: (state: State, action: VoiceEnabledSetAction): void => {
     state.voices.options = state.voices.options.map(voiceOption => {
       if (voiceOption.id === action.payload.id) {
@@ -121,10 +130,11 @@ const Reducer = createReducer(initialState, {
     state.voices.options = voiceOptionsWithEnabledState;
   },
   [wordFilterAdd]: (state: State, action: WordFilterAddAction): void => {
-    state.wordFilter[action.payload.word] = action.payload.substitution;
+    state.persistent.wordFilter[action.payload.word] =
+      action.payload.substitution;
   },
   [wordFilterRemove]: (state: State, action: WordFilterRemoveAction): void => {
-    delete state.wordFilter[action.payload];
+    delete state.persistent.wordFilter[action.payload];
   },
 });
 

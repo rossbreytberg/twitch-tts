@@ -2,17 +2,9 @@
  * @flow
  */
 
-import type {Message, State, VoiceOption} from './Reducer';
+import type {Message, PersistentState, State, VoiceOption} from './Reducer';
 
 import {createAction} from '@reduxjs/toolkit';
-
-export type AppStateSetAction = {
-  type: 'appState/set',
-  payload: State,
-};
-export const appStateSet = createAction('appState/set', (state: State) => ({
-  payload: state,
-}));
 
 export type ChannelNameSetAction = {
   type: 'channelName/set',
@@ -30,6 +22,17 @@ export type MessageAddAction = {
 export const messageAdd = createAction('message/add', (message: Message) => ({
   payload: message,
 }));
+
+export type PersistentStateSetAction = {
+  type: 'persistentState/set',
+  payload: PersistentState,
+};
+export const persistentStateSet = createAction(
+  'persistentState/set',
+  (persistentState: PersistentState) => ({
+    payload: persistentState,
+  }),
+);
 
 export type VoiceEnabledSetAction = {
   type: 'voices/enabled/set',
