@@ -36,8 +36,9 @@ export type VoiceOption = {
 };
 
 type VoiceOptionState = {
-  ...VoiceOption,
   enabled: boolean,
+  id: string,
+  name: string,
 };
 
 export type State = {

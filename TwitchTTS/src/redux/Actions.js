@@ -2,7 +2,7 @@
  * @flow
  */
 
-import type {Message, VoiceOption} from './Reducers';
+import type {Message, VoiceOption} from './Reducer';
 
 import {createAction} from '@reduxjs/toolkit';
 
