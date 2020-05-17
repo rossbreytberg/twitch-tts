@@ -37,6 +37,7 @@ namespace winrt::TwitchTTS::implementation {
   IMapView<hstring, ViewManagerPropertyType> TextToSpeechViewManager::NativeProps() noexcept {
     auto nativeProps = single_threaded_map<hstring, ViewManagerPropertyType>();
     nativeProps.Insert(L"text", ViewManagerPropertyType::String);
+    nativeProps.Insert(L"voiceID", ViewManagerPropertyType::String);
     return nativeProps.GetView();
   }
 
