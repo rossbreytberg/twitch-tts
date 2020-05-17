@@ -9,14 +9,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import StyledButton from './StyledButton.react';
 import StyledTextInput from './StyledTextInput.react';
 import Colors from '../modules/Colors';
-import {setChannelName} from '../redux/Actions';
+import {channelNameSet} from '../redux/Actions';
 import {channelNameSelector} from '../redux/Selectors';
 
 export default () => {
   const channelName = useSelector(channelNameSelector);
   const [value, setValue] = useState(channelName);
   const dispatch = useDispatch();
-  const onSave = () => dispatch(setChannelName(value));
+  const onSave = () => dispatch(channelNameSet(value));
   return (
     <View style={styles.container}>
       <StyledTextInput

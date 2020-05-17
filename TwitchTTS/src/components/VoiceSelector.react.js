@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import StyledSwitch from './StyledSwitch.react';
-import {setVoiceEnabled, setVoiceOptions} from '../redux/Actions';
+import {voiceEnabledSet, voiceOptionsSet} from '../redux/Actions';
 import {voiceOptionsSelector} from '../redux/Selectors';
 
 export default (): React.Node => {
@@ -22,7 +22,7 @@ export default (): React.Node => {
   useEffect(() => {
     async function fetchVoiceOptions() {
       const voices = await NativeModules.SpeechSynthesizerVoices.getAllVoices();
-      dispatch(setVoiceOptions(voices));
+      dispatch(voiceOptionsSet(voices));
     }
     fetchVoiceOptions();
   }, []);
@@ -33,7 +33,7 @@ export default (): React.Node => {
       key: voiceOption.id,
       name: voiceOption.name,
       onToggle: (enabled: boolean) =>
-        dispatch(setVoiceEnabled(voiceOption.id, enabled)),
+        dispatch(voiceEnabledSet(voiceOption.id, enabled)),
       // Cannot disable voice if it is the only one enabled
       toggleDisabled:
         voiceOption.enabled &&

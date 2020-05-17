@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {removeWordFilter} from '../redux/Actions';
+import {wordFilterRemove} from '../redux/Actions';
 import {wordFilterSelector} from '../redux/Selectors';
 
 export default (): React.Node => {
@@ -19,7 +19,7 @@ export default (): React.Node => {
   const wordFilterMap = useSelector(wordFilterSelector);
   const wordSubstitutions = Object.keys(wordFilterMap).map(word => ({
     key: word,
-    onRemove: () => dispatch(removeWordFilter(word)),
+    onRemove: () => dispatch(wordFilterRemove(word)),
     substitution: wordFilterMap[word],
     word,
   }));

@@ -6,22 +6,59 @@ import type {Message, State, VoiceOption} from './Reducer';
 
 import {createAction} from '@reduxjs/toolkit';
 
-export type AddMessageAction = {
+export type AppStateSetAction = {
+  type: 'appState/set',
+  payload: State,
+};
+export const appStateSet = createAction('appState/set', (state: State) => ({
+  payload: state,
+}));
+
+export type ChannelNameSetAction = {
+  type: 'channelName/set',
+  payload: string,
+};
+export const channelNameSet = createAction(
+  'channelName/set',
+  (channelName: string) => ({payload: channelName}),
+);
+
+export type MessageAddAction = {
   type: 'message/add',
   payload: Message,
 };
-export const addMessage = createAction('message/add', (message: Message) => ({
+export const messageAdd = createAction('message/add', (message: Message) => ({
   payload: message,
 }));
 
-export type AddWordFilterAction = {
+export type VoiceEnabledSetAction = {
+  type: 'voices/enabled/set',
+  payload: {enabled: boolean, id: string},
+};
+export const voiceEnabledSet = createAction(
+  'voices/enabled/set',
+  (voiceID: string, enabled: boolean) => ({
+    payload: {enabled: enabled, id: voiceID},
+  }),
+);
+
+export type VoiceOptionsSetAction = {
+  type: 'voices/options/set',
+  payload: Array<VoiceOption>,
+};
+export const voiceOptionsSet = createAction(
+  'voices/options/set',
+  (voiceOptions: Array<VoiceOption>) => ({payload: voiceOptions}),
+);
+
+export type WordFilterAddAction = {
   type: 'wordFilter/add',
   payload: {
     word: string,
     substitution: string,
   },
 };
-export const addWordFilter = createAction(
+export const wordFilterAdd = createAction(
   'wordFilter/add',
   (word: string, substitution: string) => ({
     payload: {
@@ -31,48 +68,11 @@ export const addWordFilter = createAction(
   }),
 );
 
-export type RemoveWordFilterAction = {
+export type WordFilterRemoveAction = {
   type: 'wordFilter/remove',
   payload: string,
 };
-export const removeWordFilter = createAction(
+export const wordFilterRemove = createAction(
   'wordFilter/remove',
   (word: string) => ({payload: word}),
-);
-
-export type SetAppStateAction = {
-  type: 'appState/set',
-  payload: State,
-};
-export const setAppState = createAction('appState/set', (state: State) => ({
-  payload: state,
-}));
-
-export type SetChannelAction = {
-  type: 'channelName/set',
-  payload: string,
-};
-export const setChannelName = createAction(
-  'channelName/set',
-  (channelName: string) => ({payload: channelName}),
-);
-
-export type SetVoiceEnabledAction = {
-  type: 'voices/enabled/set',
-  payload: {enabled: boolean, id: string},
-};
-export const setVoiceEnabled = createAction(
-  'voices/enabled/set',
-  (voiceID: string, enabled: boolean) => ({
-    payload: {enabled: enabled, id: voiceID},
-  }),
-);
-
-export type SetVoiceOptionsAction = {
-  type: 'voices/options/set',
-  payload: Array<VoiceOption>,
-};
-export const setVoiceOptions = createAction(
-  'voices/options/set',
-  (voiceOptions: Array<VoiceOption>) => ({payload: voiceOptions}),
 );

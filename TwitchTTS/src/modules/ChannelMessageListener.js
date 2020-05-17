@@ -3,7 +3,7 @@
  */
 
 import tmi from 'tmi.js';
-import {addMessage} from '../redux/Actions';
+import {messageAdd} from '../redux/Actions';
 import {channelNameSelector} from '../redux/Selectors';
 import Store from '../redux/Store';
 
@@ -61,7 +61,7 @@ function onMessage(
   self: boolean,
 ): void {
   Store.dispatch(
-    addMessage({
+    messageAdd({
       authorColor: tags['color'],
       authorID: tags['user-id'],
       authorName: tags['display-name'],

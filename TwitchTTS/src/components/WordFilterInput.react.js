@@ -8,7 +8,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import StyledButton from './StyledButton.react';
 import StyledTextInput from './StyledTextInput.react';
-import {addWordFilter} from '../redux/Actions';
+import {wordFilterAdd} from '../redux/Actions';
 import {channelNameSelector} from '../redux/Selectors';
 
 export default (): React.Node => {
@@ -17,7 +17,7 @@ export default (): React.Node => {
   const [substitution, setSubstitution] = useState('');
   const dispatch = useDispatch();
   const onAdd = () => {
-    dispatch(addWordFilter(word.trim(), substitution.trim()));
+    dispatch(wordFilterAdd(word.trim(), substitution.trim()));
     setWord('');
     setSubstitution('');
   };

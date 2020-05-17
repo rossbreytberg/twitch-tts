@@ -3,24 +3,24 @@
  */
 
 import type {
-  AddMessageAction,
-  AddWordFilterAction,
-  RemoveWordFilterAction,
-  SetAppStateAction,
-  SetChannelAction,
-  SetVoiceEnabledAction,
-  SetVoiceOptionsAction,
+  AppStateSetAction,
+  ChannelNameSetAction,
+  MessageAddAction,
+  VoiceEnabledSetAction,
+  VoiceOptionsSetAction,
+  WordFilterAddAction,
+  WordFilterRemoveAction,
 } from './Actions';
 
 import {createReducer} from '@reduxjs/toolkit';
 import {
-  addMessage,
-  addWordFilter,
-  removeWordFilter,
-  setAppState,
-  setChannelName,
-  setVoiceEnabled,
-  setVoiceOptions,
+  appStateSet,
+  channelNameSet,
+  messageAdd,
+  voiceEnabledSet,
+  voiceOptionsSet,
+  wordFilterAdd,
+  wordFilterRemove,
 } from './Actions';
 
 export type Message = {
@@ -62,7 +62,13 @@ const initialState: State = {
 };
 
 const Reducer = createReducer(initialState, {
-  [addMessage]: (state: State, action: AddMessageAction): void => {
+  [appStateSet]: (state: State, action: AppStateSetAction): State => {
+    return action.payload;
+  },
+  [channelNameSet]: (state: State, action: ChannelNameSetAction): void => {
+    state.channelName = action.payload;
+  },
+  [messageAdd]: (state: State, action: MessageAddAction): void => {
     // Assign a voice to the author if necessary
     const authorID = action.payload.authorID;
     let authorVoiceID = state.voices.assignments[authorID];
@@ -89,19 +95,7 @@ const Reducer = createReducer(initialState, {
     // Then push the message to the message list
     state.messages.push(action.payload);
   },
-  [addWordFilter]: (state: State, action: AddWordFilterAction): void => {
-    state.wordFilter[action.payload.word] = action.payload.substitution;
-  },
-  [removeWordFilter]: (state: State, action: RemoveWordFilterAction): void => {
-    delete state.wordFilter[action.payload];
-  },
-  [setAppState]: (state: State, action: SetAppStateAction): State => {
-    return action.payload;
-  },
-  [setChannelName]: (state: State, action: SetChannelAction): void => {
-    state.channelName = action.payload;
-  },
-  [setVoiceEnabled]: (state: State, action: SetVoiceEnabledAction): void => {
+  [voiceEnabledSet]: (state: State, action: VoiceEnabledSetAction): void => {
     state.voices.options = state.voices.options.map(voiceOption => {
       if (voiceOption.id === action.payload.id) {
         voiceOption.enabled = action.payload.enabled;
@@ -109,7 +103,7 @@ const Reducer = createReducer(initialState, {
       return voiceOption;
     });
   },
-  [setVoiceOptions]: (state: State, action: SetVoiceOptionsAction): void => {
+  [voiceOptionsSet]: (state: State, action: VoiceOptionsSetAction): void => {
     // When setting voices, re-use their previous enabled state if there is one
     // Otherwise, voice start enabled by default
     const previousEnabledStateByID = {};
@@ -125,6 +119,12 @@ const Reducer = createReducer(initialState, {
       };
     });
     state.voices.options = voiceOptionsWithEnabledState;
+  },
+  [wordFilterAdd]: (state: State, action: WordFilterAddAction): void => {
+    state.wordFilter[action.payload.word] = action.payload.substitution;
+  },
+  [wordFilterRemove]: (state: State, action: WordFilterRemoveAction): void => {
+    delete state.wordFilter[action.payload];
   },
 });
 
