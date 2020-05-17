@@ -5,18 +5,12 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
-    <Midl Include="NativeComponents\TextToSpeech\TextToSpeechElement.idl">
-      <Filter>NativeComponents\TextToSpeech</Filter>
-    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="ReactPackageProvider.cpp" />
-    <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechElement.cpp">
-      <Filter>NativeComponents\TextToSpeech</Filter>
-    </ClCompile>
     <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.cpp">
       <Filter>NativeComponents\TextToSpeech</Filter>
     </ClCompile>
@@ -25,14 +19,11 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="ReactPackageProvider.h" />
-    <ClInclude Include="NativeModules\TextToSpeech.h">
-      <Filter>NativeModules</Filter>
-    </ClInclude>
-    <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechElement.h">
-      <Filter>NativeComponents\TextToSpeech</Filter>
-    </ClInclude>
     <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.h">
       <Filter>NativeComponents\TextToSpeech</Filter>
+    </ClInclude>
+    <ClInclude Include="NativeModules\SpeechSynthesizerVoices.h">
+      <Filter>NativeModules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

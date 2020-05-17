@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.ACCENT,
   },
   input: {
-    borderColor: Colors.BORDER,
+    borderColor: Colors.DISABLED,
     flexGrow: 1,
   },
 });

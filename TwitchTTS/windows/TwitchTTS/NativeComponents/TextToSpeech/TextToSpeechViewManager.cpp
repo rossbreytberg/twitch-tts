@@ -8,7 +8,6 @@
 #include "winrt/Windows.UI.Xaml.Controls.h"
 #include "JSValueReader.h"
 #include "NativeModules.h"
-#include "TextToSpeechElement.h"
 #include "TextToSpeechViewManager.h"
 
 using namespace winrt;
@@ -47,23 +46,39 @@ namespace winrt::TwitchTTS::implementation {
     if (auto element = view.try_as<MediaPlayerElement>()) {
       const JSValueObject &propertyMap = JSValue::ReadObjectFrom(propertyMapReader);
       hstring text;
+      hstring voiceID;
       for (auto const &pair : propertyMap) {
         auto const &propertyName = pair.first;
         auto const &propertyValue = pair.second;
         if (propertyName == "text") {
           text = to_hstring(propertyValue.AsJSString());
         }
+        else if (propertyName == "voiceID") {
+          voiceID = to_hstring(propertyValue.AsJSString());
+        }
       }
       if (!text.empty()) {
         MediaPlayer mediaPlayer = MediaPlayer();
         element.SetMediaPlayer(mediaPlayer);
-        Speak(mediaPlayer, text);
+        Speak(mediaPlayer, text, voiceID);
       }
     }
   }
 
-  IAsyncAction TextToSpeechViewManager::Speak(MediaPlayer const mediaPlayer, hstring const text) noexcept {
+  IAsyncAction TextToSpeechViewManager::Speak(
+    MediaPlayer const mediaPlayer,
+    hstring const text,
+    hstring const voiceID
+  ) noexcept {
     SpeechSynthesizer synthesizer = SpeechSynthesizer();
+    if (!voiceID.empty()) {
+      for (VoiceInformation const voiceInfo : synthesizer.AllVoices()) {
+        if (voiceInfo.Id() == voiceID) {
+          synthesizer.Voice(voiceInfo);
+          break;
+        }
+      }
+    }
     SpeechSynthesisStream audioStream = co_await synthesizer.SynthesizeTextToStreamAsync(text);
     mediaPlayer.Source(MediaSource::CreateFromStream(audioStream, audioStream.ContentType()));
     mediaPlayer.Play();

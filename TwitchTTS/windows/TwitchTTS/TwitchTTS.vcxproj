@@ -102,9 +102,8 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechElement.h" />
     <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.h" />
-    <ClInclude Include="NativeModules\TextToSpeech.h" />
+    <ClInclude Include="NativeModules\SpeechSynthesizerVoices.h" />
     <ClInclude Include="ReactPackageProvider.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.h">
@@ -131,7 +130,6 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechElement.cpp" />
     <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.cpp" />
     <ClCompile Include="ReactPackageProvider.cpp" />
     <ClCompile Include="pch.cpp">
@@ -146,7 +144,6 @@
     <Midl Include="App.idl">
       <DependentUpon>App.xaml</DependentUpon>
     </Midl>
-    <Midl Include="NativeComponents\TextToSpeech\TextToSpeechElement.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

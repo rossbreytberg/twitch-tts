@@ -32,7 +32,7 @@ export default (): React.Node => {
 };
 
 function renderItem(data: {index: number, item: Message}) {
-  const {author, authorColor, content, id, timestamp} = data.item;
+  const {authorColor, authorName, content, id, timestamp} = data.item;
   return (
     <View key={id} style={styles.message}>
       <View style={styles.authorTimeContainer}>
@@ -41,7 +41,7 @@ function renderItem(data: {index: number, item: Message}) {
             timeStyle: 'short',
           })}
         </Text>
-        <Text style={[styles.author, {color: authorColor}]}>{author}</Text>
+        <Text style={[styles.author, {color: authorColor}]}>{authorName}</Text>
         <Text>{':'}</Text>
       </View>
       <Text>{content}</Text>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   container: {
-    height: 300,
+    height: 150,
   },
   message: {
     alignItems: 'flex-start',

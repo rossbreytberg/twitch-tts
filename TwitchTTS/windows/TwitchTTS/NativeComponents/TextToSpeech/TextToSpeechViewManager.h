@@ -33,6 +33,9 @@ namespace winrt::TwitchTTS::implementation {
         IJSValueReader const &propertyMapReader) noexcept;
 
     private:
-      IAsyncAction Speak(MediaPlayer const mediaPlayer, hstring const text) noexcept;
+      IAsyncAction Speak(
+        MediaPlayer const mediaPlayer,
+        hstring const text,
+        hstring const voiceID) noexcept;
   };
 }

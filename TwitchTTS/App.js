@@ -17,6 +17,7 @@ import ChannelDisplay from './src/components/ChannelDisplay.react';
 import ChannelInput from './src/components/ChannelInput.react';
 import MessageDisplay from './src/components/MessageDisplay.react';
 import {Subtitle, Title} from './src/components/StyledText.react';
+import VoiceSelector from './src/components/VoiceSelector.react';
 import WordFilterDisplay from './src/components/WordFilterDisplay.react';
 import WordFilterInput from './src/components/WordFilterInput.react';
 import Store from './src/redux/Store';
@@ -26,16 +27,22 @@ export default (): React.Node => {
     <Provider store={Store}>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <View style={styles.container}>
+        <View style={styles.title}>
           <ChannelDisplay />
-          <Subtitle>{'Chat'}</Subtitle>
-          <MessageDisplay />
-          <Subtitle>{'Channel'}</Subtitle>
-          <ChannelInput />
-          <Subtitle>{'Word Filters'}</Subtitle>
-          <WordFilterDisplay />
-          <WordFilterInput />
         </View>
+        <ScrollView>
+          <View style={styles.container}>
+            <Subtitle>{'Chat'}</Subtitle>
+            <MessageDisplay />
+            <Subtitle>{'Channel'}</Subtitle>
+            <ChannelInput />
+            <Subtitle>{'Voices'}</Subtitle>
+            <VoiceSelector />
+            <Subtitle>{'Word Filters'}</Subtitle>
+            <WordFilterDisplay />
+            <WordFilterInput />
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </Provider>
   );
@@ -43,6 +50,12 @@ export default (): React.Node => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
+    flexDirection: 'column',
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+  },
+  title: {
+    marginHorizontal: 20,
+    marginTop: 20,
   },
 });

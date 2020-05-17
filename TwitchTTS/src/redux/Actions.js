@@ -2,7 +2,7 @@
  * @flow
  */
 
-import type {Message} from './Reducers';
+import type {Message, VoiceOption} from './Reducers';
 
 import {createAction} from '@reduxjs/toolkit';
 
@@ -47,4 +47,24 @@ export type SetChannelAction = {
 export const setChannelName = createAction(
   'channelName/set',
   (channelName: string) => ({payload: channelName}),
+);
+
+export type SetVoiceEnabledAction = {
+  type: 'voices/enabled/set',
+  payload: {enabled: boolean, id: string},
+};
+export const setVoiceEnabled = createAction(
+  'voices/enabled/set',
+  (voiceID: string, enabled: boolean) => ({
+    payload: {enabled: enabled, id: voiceID},
+  }),
+);
+
+export type SetVoiceOptionsAction = {
+  type: 'voices/options/set',
+  payload: Array<VoiceOption>,
+};
+export const setVoiceOptions = createAction(
+  'voices/options/set',
+  (voiceOptions: Array<VoiceOption>) => ({payload: voiceOptions}),
 );

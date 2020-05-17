@@ -21,6 +21,7 @@ export default (): React.Node => {
     setWord('');
     setSubstitution('');
   };
+  const isSubmitDisabled = word == '' || word === substitution;
   return (
     <View style={styles.container}>
       <StyledTextInput
@@ -37,17 +38,13 @@ export default (): React.Node => {
       <StyledTextInput
         blurOnSubmit={true}
         onChangeText={setSubstitution}
-        onSubmitEditing={onAdd}
+        onSubmitEditing={!isSubmitDisabled ? onAdd : null}
         placeholder="Replacement"
         ref={substitutionInput}
         style={styles.substitutionInput}
         value={substitution}
       />
-      <StyledButton
-        disabled={word == '' || word === substitution}
-        onPress={onAdd}
-        title="Add"
-      />
+      <StyledButton disabled={isSubmitDisabled} onPress={onAdd} title="Add" />
     </View>
   );
 };
