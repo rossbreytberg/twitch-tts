@@ -41,30 +41,28 @@ export type VoiceOption = {|
 // State that will persist across app restarts
 export type PersistentState = {|
   channelName: string,
+  voiceOptions: Array<
+    VoiceOption & {|
+      enabled: boolean,
+    |},
+  >,
   wordFilter: {[word: string]: string},
 |};
 
 export type State = {|
   messages: Array<Message>,
   persistent: PersistentState,
-  voices: {|
-    assignments: {[userID: string]: string},
-    options: VoiceOption & {|
-      enabled: boolean,
-    |},
-  |},
+  voiceAssignments: {[userID: string]: string},
 |};
 
 const initialState: State = {
   messages: [],
   persistent: {
     channelName: '',
+    voiceOptions: [],
     wordFilter: {},
   },
-  voices: {
-    assignments: {},
-    options: [],
-  },
+  voiceAssignments: {},
 };
 
 const Reducer = createReducer(initialState, {
@@ -74,8 +72,8 @@ const Reducer = createReducer(initialState, {
   [messageAdd]: (state: State, action: MessageAddAction): void => {
     // Assign a voice to the author if necessary
     const authorID = action.payload.authorID;
-    let authorVoiceID = state.voices.assignments[authorID];
-    const enabledVoiceIDs = state.voices.options
+    let authorVoiceID = state.voiceAssignments[authorID];
+    const enabledVoiceIDs = state.persistent.voiceOptions
       .filter(voiceOption => voiceOption.enabled)
       .map(voiceOption => voiceOption.id);
     if (
@@ -83,7 +81,7 @@ const Reducer = createReducer(initialState, {
       !enabledVoiceIDs.includes(authorVoiceID)
     ) {
       const assignedVoiceIDs = {};
-      Object.values(state.voices.assignments).forEach(voiceID => {
+      Object.values(state.voiceAssignments).forEach(voiceID => {
         if (typeof voiceID === 'string') {
           assignedVoiceIDs[voiceID] = true;
         }
@@ -91,7 +89,7 @@ const Reducer = createReducer(initialState, {
       const unassignedVoiceIDs = enabledVoiceIDs.filter(
         voiceID => assignedVoiceIDs[voiceID] === undefined,
       );
-      state.voices.assignments[authorID] = getRandomArrayItem(
+      state.voiceAssignments[authorID] = getRandomArrayItem(
         unassignedVoiceIDs.length > 0 ? unassignedVoiceIDs : enabledVoiceIDs,
       );
     }
@@ -105,18 +103,20 @@ const Reducer = createReducer(initialState, {
     state.persistent = action.payload;
   },
   [voiceEnabledSet]: (state: State, action: VoiceEnabledSetAction): void => {
-    state.voices.options = state.voices.options.map(voiceOption => {
-      if (voiceOption.id === action.payload.id) {
-        voiceOption.enabled = action.payload.enabled;
-      }
-      return voiceOption;
-    });
+    state.persistent.voiceOptions = state.persistent.voiceOptions.map(
+      voiceOption => {
+        if (voiceOption.id === action.payload.id) {
+          voiceOption.enabled = action.payload.enabled;
+        }
+        return voiceOption;
+      },
+    );
   },
   [voiceOptionsSet]: (state: State, action: VoiceOptionsSetAction): void => {
     // When setting voices, re-use their previous enabled state if there is one
     // Otherwise, voice start enabled by default
     const previousEnabledStateByID = {};
-    state.voices.options.forEach(voiceOptionState => {
+    state.persistent.voiceOptions.forEach(voiceOptionState => {
       previousEnabledStateByID[voiceOptionState.id] = voiceOptionState.enabled;
     });
     const voiceOptionsWithEnabledState = action.payload.map(voiceOption => {
@@ -127,7 +127,7 @@ const Reducer = createReducer(initialState, {
           previousEnabledState !== undefined ? previousEnabledState : true,
       };
     });
-    state.voices.options = voiceOptionsWithEnabledState;
+    state.persistent.voiceOptions = voiceOptionsWithEnabledState;
   },
   [wordFilterAdd]: (state: State, action: WordFilterAddAction): void => {
     state.persistent.wordFilter[action.payload.word] =
@@ -138,7 +138,7 @@ const Reducer = createReducer(initialState, {
   },
 });
 
-function getRandomArrayItem(array: Array<T>): T {
+function getRandomArrayItem<T>(array: Array<T>): T {
   return array[Math.floor(array.length * Math.random())];
 }
 

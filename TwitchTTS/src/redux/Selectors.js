@@ -18,14 +18,14 @@ export function persistentStateSelector(state: State): PersistentState {
 
 export function voiceAssignmentSelector(
   state: State,
-): $PropertyType<$PropertyType<State, 'voices'>, 'assignments'> {
-  return state.voices.assignments;
+): $PropertyType<State, 'voiceAssignments'> {
+  return state.voiceAssignments;
 }
 
 export function voiceOptionsSelector(
   state: State,
-): $PropertyType<$PropertyType<State, 'voices'>, 'options'> {
-  return state.voices.options;
+): $PropertyType<PersistentState, 'voiceOptions'> {
+  return persistentStateSelector(state).voiceOptions;
 }
 
 export function wordFilterSelector(
