@@ -13,17 +13,22 @@ import {
   View,
 } from 'react-native';
 import {useSelector} from 'react-redux';
-import {messagesSelector} from '../redux/Selectors';
+import {messagesSelector, voiceAssignmentSelector} from '../redux/Selectors';
 
 const TextToSpeech = requireNativeComponent('TextToSpeech');
 
 export default (): React.Node => {
   const messages = useSelector(messagesSelector);
+  const voiceAssignments = useSelector(voiceAssignmentSelector);
   const reversedMessages = Array.from(messages);
   reversedMessages.reverse();
+  const reversedMessagesWithVoiceID = reversedMessages.map(message => ({
+    ...message,
+    voiceID: voiceAssignments[message.authorID] || null,
+  }));
   return (
     <FlatList
-      data={reversedMessages}
+      data={reversedMessagesWithVoiceID}
       inverted={true}
       renderItem={renderItem}
       style={styles.container}
@@ -31,8 +36,8 @@ export default (): React.Node => {
   );
 };
 
-function renderItem(data: {index: number, item: Message}) {
-  const {authorColor, authorName, content, id, timestamp} = data.item;
+function renderItem(data: {index: number, item: Message & {voiceID: ?string}}) {
+  const {authorColor, authorName, content, id, timestamp, voiceID} = data.item;
   return (
     <View key={id} style={styles.message}>
       <View style={styles.authorTimeContainer}>
@@ -45,7 +50,7 @@ function renderItem(data: {index: number, item: Message}) {
         <Text>{':'}</Text>
       </View>
       <Text>{content}</Text>
-      <TextToSpeech text={content} />
+      <TextToSpeech text={content} voiceID={voiceID} />
     </View>
   );
 }

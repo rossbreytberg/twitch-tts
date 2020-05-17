@@ -26,19 +26,24 @@ export default (): React.Node => {
     }
     fetchVoiceOptions();
   }, []);
-  const voiceOptions = useSelector(voiceOptionsSelector).map(voiceOption => {
+  const voiceOptions = useSelector(voiceOptionsSelector);
+  const voiceRowData = voiceOptions.map(voiceOption => {
     return {
       enabled: voiceOption.enabled,
       key: voiceOption.id,
       name: voiceOption.name,
       onToggle: (enabled: boolean) =>
         dispatch(setVoiceEnabled(voiceOption.id, enabled)),
+      // Cannot disable voice if it is the only one enabled
+      toggleDisabled:
+        voiceOption.enabled &&
+        voiceOptions.filter(voiceOption => voiceOption.enabled).length < 2,
     };
   });
-  if (voiceOptions.length === 0) {
+  if (voiceRowData.length === 0) {
     return null;
   }
-  return <FlatList data={voiceOptions} renderItem={renderItem} />;
+  return <FlatList data={voiceRowData} renderItem={renderItem} />;
 };
 
 function renderItem(data: {
@@ -47,17 +52,22 @@ function renderItem(data: {
     enabled: boolean,
     name: string,
     onToggle: (enabled: boolean) => void,
+    toggleDisabled: boolean,
   },
 }): React.Node {
   const {
     index,
-    item: {enabled, name, onToggle},
+    item: {enabled, name, onToggle, toggleDisabled},
   } = data;
   return (
     <TouchableHighlight onPress={() => onToggle(!enabled)}>
       <View style={styles.voiceRow}>
         <Text>{name}</Text>
-        <StyledSwitch onValueChange={onToggle} value={enabled} />
+        <StyledSwitch
+          disabled={toggleDisabled}
+          onValueChange={onToggle}
+          value={enabled}
+        />
       </View>
     </TouchableHighlight>
   );

@@ -14,6 +14,12 @@ export function messagesSelector(
   return state.messages;
 }
 
+export function voiceAssignmentSelector(
+  state: State,
+): $PropertyType<$PropertyType<State, 'voices'>, 'assignments'> {
+  return state.voices.assignments;
+}
+
 export function voiceOptionsSelector(
   state: State,
 ): $PropertyType<$PropertyType<State, 'voices'>, 'options'> {

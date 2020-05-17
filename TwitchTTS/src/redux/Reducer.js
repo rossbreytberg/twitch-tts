@@ -30,30 +30,30 @@ export type Message = {
   timestamp: number,
 };
 
-export type VoiceOption = {
+export type VoiceOption = {|
   id: string,
   name: string,
-};
+|};
 
-type VoiceOptionState = {
+type VoiceOptionState = VoiceOption & {|
   enabled: boolean,
-  id: string,
-  name: string,
-};
+|};
 
-export type State = {
+export type State = {|
   channelName: string,
   messages: Array<Message>,
   voices: {
+    assignments: {[userID: string]: string},
     options: Array<VoiceOptionState>,
   },
   wordFilter: {[word: string]: string},
-};
+|};
 
 const initialState: State = {
   channelName: '',
   messages: [],
   voices: {
+    assignments: {},
     options: [],
   },
   wordFilter: {},
@@ -61,6 +61,33 @@ const initialState: State = {
 
 const Reducer = createReducer(initialState, {
   [addMessage]: (state: State, action: AddMessageAction): void => {
+    // Assign a voice to the author if necessary
+    const authorID = action.payload.authorID;
+    let authorVoiceID = state.voices.assignments[authorID];
+    const enabledVoiceIDs = state.voices.options
+      .filter(voiceOption => voiceOption.enabled)
+      .map(voiceOption => voiceOption.id);
+    if (
+      authorVoiceID === undefined ||
+      !enabledVoiceIDs.includes(authorVoiceID)
+    ) {
+      const assignedVoiceIDs = {};
+      Object.values(state.voices.assignments).forEach(voiceID => {
+        if (typeof voiceID === 'string') {
+          assignedVoiceIDs[voiceID] = true;
+        }
+      });
+      const unassignedVoiceIDs = enabledVoiceIDs.filter(
+        voiceID => assignedVoiceIDs[voiceID] === undefined,
+      );
+      if (unassignedVoiceIDs.length > 0) {
+        state.voices.assignments[authorID] = unassignedVoiceIDs[0];
+      } else {
+        state.voices.assignments[authorID] =
+          enabledVoiceIDs[Math.floor(enabledVoiceIDs.length * Math.random())];
+      }
+    }
+    // Then push the message to the message list
     state.messages.push(action.payload);
   },
   [addWordFilter]: (state: State, action: AddWordFilterAction): void => {
