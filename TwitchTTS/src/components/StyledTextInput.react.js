@@ -12,32 +12,15 @@ export default forwardRef(
     props: React.ElementProps<TextInput>,
     ref: React.Ref<TextInput>,
   ): React.Node => {
-    const {onBlur, onFocus, style} = props;
+    const {style} = props;
     const [focused, setFocused] = useState(false);
-    return (
-      <TextInput
-        {...props}
-        onBlur={() => {
-          setFocused(false);
-          onBlur && onBlur();
-        }}
-        onFocus={() => {
-          setFocused(true);
-          onFocus && onFocus();
-        }}
-        ref={ref}
-        style={[styles.input, focused && styles.focused, style]}
-      />
-    );
+    return <TextInput {...props} ref={ref} style={[styles.input, style]} />;
   },
 );
 
 const styles = StyleSheet.create({
-  focused: {
-    borderColor: Colors.ACCENT,
-  },
   input: {
-    borderColor: Colors.DISABLED,
+    borderColor: Colors.ACCENT,
     flexGrow: 1,
   },
 });
