@@ -2,7 +2,7 @@
  * @flow
  */
 
-import type {Message, VoiceOption} from './Reducer';
+import type {Message, State, VoiceOption} from './Reducer';
 
 import {createAction} from '@reduxjs/toolkit';
 
@@ -39,6 +39,14 @@ export const removeWordFilter = createAction(
   'wordFilter/remove',
   (word: string) => ({payload: word}),
 );
+
+export type SetAppStateAction = {
+  type: 'appState/set',
+  payload: State,
+};
+export const setAppState = createAction('appState/set', (state: State) => ({
+  payload: state,
+}));
 
 export type SetChannelAction = {
   type: 'channelName/set',
