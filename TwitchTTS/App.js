@@ -53,9 +53,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingBottom: 20,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
   title: {
-    marginHorizontal: 20,
-    marginTop: 20,
+    backgroundColor: '#000',
+    left: 0,
+    paddingHorizontal: 20,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 1,
   },
 });
