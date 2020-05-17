@@ -82,12 +82,9 @@ const Reducer = createReducer(initialState, {
       const unassignedVoiceIDs = enabledVoiceIDs.filter(
         voiceID => assignedVoiceIDs[voiceID] === undefined,
       );
-      if (unassignedVoiceIDs.length > 0) {
-        state.voices.assignments[authorID] = unassignedVoiceIDs[0];
-      } else {
-        state.voices.assignments[authorID] =
-          enabledVoiceIDs[Math.floor(enabledVoiceIDs.length * Math.random())];
-      }
+      state.voices.assignments[authorID] = getRandomArrayItem(
+        unassignedVoiceIDs.length > 0 ? unassignedVoiceIDs : enabledVoiceIDs,
+      );
     }
     // Then push the message to the message list
     state.messages.push(action.payload);
@@ -130,5 +127,9 @@ const Reducer = createReducer(initialState, {
     state.voices.options = voiceOptionsWithEnabledState;
   },
 });
+
+function getRandomArrayItem(array: Array<T>): T {
+  return array[Math.floor(array.length * Math.random())];
+}
 
 export default Reducer;
