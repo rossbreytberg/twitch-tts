@@ -5,12 +5,12 @@
 import * as React from 'react';
 import {StyleSheet, Text} from 'react-native';
 
-export function Title(props: React.ElementProps<Button>): React.Node {
+export function Title(props: React.ElementProps<typeof Text>): React.Node {
   const {style} = props;
   return <Text {...props} style={[styles.title, style]} />;
 }
 
-export function Subtitle(props: React.ElementProps<Button>): React.Node {
+export function Subtitle(props: React.ElementProps<typeof Text>): React.Node {
   const {style} = props;
   return <Text {...props} style={[styles.subtitle, style]} />;
 }

@@ -6,6 +6,6 @@ import * as React from 'react';
 import {Switch} from 'react-native';
 import Colors from '../modules/Colors';
 
-export default (props: React.ElementProps<Switch>): React.Node => {
-  return <Switch trackColor={{true: Colors.ACCENT}} {...props} />;
+export default (props: React.ElementProps<typeof Switch>): React.Node => {
+  return <Switch {...props} trackColor={{true: Colors.ACCENT}} />;
 };

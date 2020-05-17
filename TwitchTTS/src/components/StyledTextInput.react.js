@@ -7,10 +7,10 @@ import {forwardRef, useState} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 import Colors from '../modules/Colors';
 
-export default forwardRef(
+export default forwardRef<React.ElementProps<typeof TextInput>, TextInput>(
   (
-    props: React.ElementProps<TextInput>,
-    ref: React.Ref<TextInput>,
+    props: React.ElementProps<typeof TextInput>,
+    ref: React.Ref<typeof TextInput>,
   ): React.Node => {
     const {style} = props;
     const [focused, setFocused] = useState(false);

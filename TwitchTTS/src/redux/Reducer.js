@@ -14,7 +14,6 @@ import type {
 
 import {createReducer} from '@reduxjs/toolkit';
 import {
-  appStateSet,
   channelNameSet,
   messageAdd,
   persistentStateSet,
@@ -115,7 +114,7 @@ const Reducer = createReducer(initialState, {
   [voiceOptionsSet]: (state: State, action: VoiceOptionsSetAction): void => {
     // When setting voices, re-use their previous enabled state if there is one
     // Otherwise, voice start enabled by default
-    const previousEnabledStateByID = {};
+    const previousEnabledStateByID: {[id: string]: ?boolean} = {};
     state.persistent.voiceOptions.forEach(voiceOptionState => {
       previousEnabledStateByID[voiceOptionState.id] = voiceOptionState.enabled;
     });
@@ -123,8 +122,7 @@ const Reducer = createReducer(initialState, {
       const previousEnabledState = previousEnabledStateByID[voiceOption.id];
       return {
         ...voiceOption,
-        enabled:
-          previousEnabledState !== undefined ? previousEnabledState : true,
+        enabled: previousEnabledState != null ? previousEnabledState : true,
       };
     });
     state.persistent.voiceOptions = voiceOptionsWithEnabledState;
