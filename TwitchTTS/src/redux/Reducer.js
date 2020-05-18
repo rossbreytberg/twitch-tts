@@ -64,6 +64,8 @@ const initialState: State = {
   voiceAssignments: {},
 };
 
+const MAX_MESSAGE_COUNT: number = 10;
+
 const Reducer = createReducer(initialState, {
   [channelNameSet]: (state: State, action: ChannelNameSetAction): void => {
     state.persistent.channelName = action.payload;
@@ -94,6 +96,10 @@ const Reducer = createReducer(initialState, {
     }
     // Then push the message to the message list
     state.messages.push(action.payload);
+    // Drop old messages if we have too many
+    state.messages = state.messages.slice(
+      Math.max(state.messages.length - MAX_MESSAGE_COUNT, 0),
+    );
   },
   [persistentStateSet]: (
     state: State,
