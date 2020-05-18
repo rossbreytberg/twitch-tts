@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   new: {
-    color: '#98fa82',
+    color: '#00cc6a',
     fontWeight: 'bold',
   },
   old: {
@@ -78,7 +78,9 @@ const styles = StyleSheet.create({
   },
   substitution: {
     alignItems: 'center',
-    backgroundColor: '#111',
+    backgroundColor: {
+      windowsbrush: 'SystemControlForegroundChromeMediumBrush',
+    },
     flexDirection: 'row',
     flexGrow: 1,
     justifyContent: 'center',

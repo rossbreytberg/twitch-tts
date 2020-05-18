@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   title: {
-    backgroundColor: '#000',
     left: 0,
     paddingHorizontal: 20,
     position: 'absolute',

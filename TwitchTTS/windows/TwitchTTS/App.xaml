@@ -5,6 +5,19 @@
     xmlns:local="using:TwitchTTS"
     xmlns:react="using:Microsoft.ReactNative">
     <Application.Resources>
-        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary>
+                    <Color x:Key="SystemAccentColor">#6441a5</Color>
+                    <Color x:Key="SystemAccentColorLight1">#7d5abe</Color>
+                    <Color x:Key="SystemAccentColorLight2">#9a7fcd</Color>
+                    <Color x:Key="SystemAccentColorLight3">#b7a4db</Color>
+                    <Color x:Key="SystemAccentColorDark1">#4e3280</Color>
+                    <Color x:Key="SystemAccentColorDark2">#37245b</Color>
+                    <Color x:Key="SystemAccentColorDark3">#211637</Color>
+        </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </react:ReactApplication>

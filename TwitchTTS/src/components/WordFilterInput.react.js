@@ -4,10 +4,9 @@
 
 import * as React from 'react';
 import {useRef, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import StyledButton from './StyledButton.react';
-import StyledTextInput from './StyledTextInput.react';
 import {wordFilterAdd} from '../redux/Actions';
 import {channelNameSelector} from '../redux/Selectors';
 
@@ -24,7 +23,7 @@ export default (): React.Node => {
   const isSubmitDisabled = word == '' || word === substitution;
   return (
     <View style={styles.container}>
-      <StyledTextInput
+      <TextInput
         blurOnSubmit={true}
         onChangeText={setWord}
         onSubmitEditing={() => {
@@ -35,7 +34,7 @@ export default (): React.Node => {
         value={word}
       />
       <Text style={styles.arrow}>{'→'}</Text>
-      <StyledTextInput
+      <TextInput
         blurOnSubmit={true}
         onChangeText={setSubstitution}
         onSubmitEditing={!isSubmitDisabled ? onAdd : null}

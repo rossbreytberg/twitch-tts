@@ -8,12 +8,12 @@ import {
   FlatList,
   NativeModules,
   StyleSheet,
+  Switch,
   Text,
   TouchableHighlight,
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import StyledSwitch from './StyledSwitch.react';
 import {voiceEnabledSet, voiceOptionsSet} from '../redux/Actions';
 import {voiceOptionsSelector} from '../redux/Selectors';
 
@@ -63,7 +63,7 @@ function renderItem(data: {
     <TouchableHighlight onPress={() => onToggle(!enabled)}>
       <View style={styles.voiceRow}>
         <Text>{name}</Text>
-        <StyledSwitch
+        <Switch
           disabled={toggleDisabled}
           onValueChange={onToggle}
           value={enabled}
