@@ -29,7 +29,7 @@ export default (): React.Node => {
   processedMessages.reverse();
   processedMessages = processedMessages.map(message => ({
     ...message,
-    content: message.content
+    filteredContent: message.content
       .split(' ')
       .map(word => (wordFilter[word] === undefined ? word : wordFilter[word]))
       .join(' '),
@@ -52,8 +52,19 @@ export default (): React.Node => {
   );
 };
 
-function renderItem(data: {index: number, item: Message & {voiceID: ?string}}) {
-  const {authorColor, authorName, content, id, timestamp, voiceID} = data.item;
+function renderItem(data: {
+  index: number,
+  item: Message & {filteredContent: string, voiceID: ?string},
+}) {
+  const {
+    authorColor,
+    authorName,
+    content,
+    filteredContent,
+    id,
+    timestamp,
+    voiceID,
+  } = data.item;
   return (
     <View key={id} style={styles.message}>
       <View style={styles.authorTimeContainer}>
@@ -66,7 +77,7 @@ function renderItem(data: {index: number, item: Message & {voiceID: ?string}}) {
         <Text>{':'}</Text>
       </View>
       <Text>{content}</Text>
-      <TextToSpeech text={content} voiceID={voiceID} />
+      <TextToSpeech text={filteredContent} voiceID={voiceID} />
     </View>
   );
 }
