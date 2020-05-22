@@ -9,7 +9,7 @@ import ChannelDisplay from './ChannelDisplay.react';
 import ChannelInput from './ChannelInput.react';
 import MessageDisplay from './MessageDisplay.react';
 import SettingsVisibleToggle from './SettingsVisibleToggle.react';
-import {Subtitle} from './StyledText.react';
+import {Subtitle, Title} from './StyledText.react';
 import VoiceSelector from './VoiceSelector.react';
 import WordFilterDisplay from './WordFilterDisplay.react';
 import WordFilterInput from './WordFilterInput.react';
@@ -25,10 +25,10 @@ export default (): React.Node => {
       </View>
       <ScrollView>
         <View style={styles.container}>
-          <Subtitle>{'Chat'}</Subtitle>
           <MessageDisplay />
           {settingsVisible && (
-            <>
+            <View style={styles.settings}>
+              <Title>{'Settings'}</Title>
               <Subtitle>{'Channel'}</Subtitle>
               <ChannelInput />
               <Subtitle>{'Voices'}</Subtitle>
@@ -36,7 +36,7 @@ export default (): React.Node => {
               <Subtitle>{'Word Filters'}</Subtitle>
               <WordFilterDisplay />
               <WordFilterInput />
-            </>
+            </View>
           )}
         </View>
       </ScrollView>
@@ -64,5 +64,8 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     zIndex: 1,
+  },
+  settings: {
+    marginTop: 12,
   },
 });

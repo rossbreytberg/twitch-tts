@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 18,
     marginBottom: 12,
-    marginTop: 20,
+    marginTop: 16,
   },
 });

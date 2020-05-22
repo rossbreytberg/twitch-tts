@@ -26,6 +26,13 @@ export default (): React.Node => {
     ...message,
     voiceID: voiceAssignments[message.authorID] || null,
   }));
+  if (messages.length === 0) {
+    return (
+      <View style={[styles.container, styles.placeholder]}>
+        <Text>{'Chat messages will appear here.'}</Text>
+      </View>
+    );
+  }
   return (
     <FlatList
       data={reversedMessagesWithVoiceID}
@@ -70,6 +77,10 @@ const styles = StyleSheet.create({
   message: {
     alignItems: 'flex-start',
     flexDirection: 'row',
+  },
+  placeholder: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   time: {
     color: '#ccc',
