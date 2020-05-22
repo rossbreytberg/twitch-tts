@@ -34,6 +34,15 @@ export const persistentStateSet = createAction(
   }),
 );
 
+export type SettingsVisibleSetAction = {
+  type: 'settings/visible/set',
+  payload: boolean,
+};
+export const settingsVisibleSet = createAction(
+  'settings/visible/set',
+  (visible: boolean) => ({payload: visible}),
+);
+
 export type VoiceEnabledSetAction = {
   type: 'voices/enabled/set',
   payload: {enabled: boolean, id: string},

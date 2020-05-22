@@ -16,6 +16,10 @@ export function persistentStateSelector(state: State): PersistentState {
   return state.persistent;
 }
 
+export function settingsVisibleSelector(state: State): boolean {
+  return persistentStateSelector(state).settingsVisible;
+}
+
 export function voiceAssignmentSelector(
   state: State,
 ): $PropertyType<State, 'voiceAssignments'> {

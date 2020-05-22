@@ -6,6 +6,7 @@ import type {
   ChannelNameSetAction,
   MessageAddAction,
   PersistentStateSetAction,
+  SettingsVisibleSetAction,
   VoiceEnabledSetAction,
   VoiceOptionsSetAction,
   WordFilterAddAction,
@@ -17,6 +18,7 @@ import {
   channelNameSet,
   messageAdd,
   persistentStateSet,
+  settingsVisibleSet,
   voiceEnabledSet,
   voiceOptionsSet,
   wordFilterAdd,
@@ -40,6 +42,7 @@ export type VoiceOption = {|
 // State that will persist across app restarts
 export type PersistentState = {|
   channelName: string,
+  settingsVisible: boolean,
   voiceOptions: Array<
     VoiceOption & {|
       enabled: boolean,
@@ -58,6 +61,7 @@ const initialState: State = {
   messages: [],
   persistent: {
     channelName: '',
+    settingsVisible: false,
     voiceOptions: [],
     wordFilter: {},
   },
@@ -106,6 +110,12 @@ const Reducer = createReducer(initialState, {
     action: PersistentStateSetAction,
   ): void => {
     state.persistent = action.payload;
+  },
+  [settingsVisibleSet]: (
+    state: State,
+    action: SettingsVisibleSetAction,
+  ): void => {
+    state.persistent.settingsVisible = action.payload;
   },
   [voiceEnabledSet]: (state: State, action: VoiceEnabledSetAction): void => {
     state.persistent.voiceOptions = state.persistent.voiceOptions.map(
