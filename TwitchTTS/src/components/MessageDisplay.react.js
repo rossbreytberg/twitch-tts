@@ -13,20 +13,29 @@ import {
   View,
 } from 'react-native';
 import {useSelector} from 'react-redux';
-import {messagesSelector, voiceAssignmentSelector} from '../redux/Selectors';
+import {
+  messagesSelector,
+  voiceAssignmentSelector,
+  wordFilterSelector,
+} from '../redux/Selectors';
 
 const TextToSpeech = requireNativeComponent('TextToSpeech');
 
 export default (): React.Node => {
   const messages = useSelector(messagesSelector);
   const voiceAssignments = useSelector(voiceAssignmentSelector);
-  const reversedMessages = Array.from(messages);
-  reversedMessages.reverse();
-  const reversedMessagesWithVoiceID = reversedMessages.map(message => ({
+  const wordFilter = useSelector(wordFilterSelector);
+  let processedMessages = Array.from(messages);
+  processedMessages.reverse();
+  processedMessages = processedMessages.map(message => ({
     ...message,
+    content: message.content
+      .split(' ')
+      .map(word => (wordFilter[word] === undefined ? word : wordFilter[word]))
+      .join(' '),
     voiceID: voiceAssignments[message.authorID] || null,
   }));
-  if (messages.length === 0) {
+  if (processedMessages.length === 0) {
     return (
       <View style={[styles.container, styles.placeholder]}>
         <Text>{'Chat messages will appear here.'}</Text>
@@ -35,7 +44,7 @@ export default (): React.Node => {
   }
   return (
     <FlatList
-      data={reversedMessagesWithVoiceID}
+      data={processedMessages}
       inverted={true}
       renderItem={renderItem}
       style={styles.container}
