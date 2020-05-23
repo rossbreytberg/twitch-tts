@@ -60,6 +60,9 @@ function onMessage(
   message: string,
   self: boolean,
 ): void {
+  if (channel !== channelName) {
+    return;
+  }
   Store.dispatch(
     messageAdd({
       authorColor: tags['color'],
