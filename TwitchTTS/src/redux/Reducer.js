@@ -98,6 +98,9 @@ const Reducer = createReducer(initialState, {
   },
   [channelNameSet]: (state: State, action: ChannelNameSetAction): void => {
     state.persistent.channelName = action.payload;
+    // Reset messages and voice assignments when changing channels
+    state.messages = initialState.messages;
+    state.voiceAssignments = initialState.voiceAssignments;
   },
   [messageAdd]: (state: State, action: MessageAddAction): void => {
     // Assign a voice to the author if necessary
