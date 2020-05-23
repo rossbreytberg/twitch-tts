@@ -3,7 +3,6 @@
  */
 
 import * as React from 'react';
-import {useEffect} from 'react';
 import {
   FlatList,
   NativeModules,
@@ -19,13 +18,6 @@ import {voiceOptionsSelector} from '../redux/Selectors';
 
 export default (): React.Node => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    async function fetchVoiceOptions() {
-      const voices = await NativeModules.TextToSpeech.getVoices();
-      dispatch(voiceOptionsSet(voices));
-    }
-    fetchVoiceOptions();
-  }, []);
   const voiceOptions = useSelector(voiceOptionsSelector);
   const voiceRowData = voiceOptions.map(voiceOption => {
     return {
