@@ -1,7 +1,7 @@
 #pragma once
 
 #include "App.xaml.g.h"
-#include "NativeModules/SpeechSynthesizerVoices.h"
+#include "NativeModules/TextToSpeech.h"
 
 
 

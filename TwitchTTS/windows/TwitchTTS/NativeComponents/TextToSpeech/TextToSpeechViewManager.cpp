@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include "winrt/Windows.Devices.Enumeration.h"
 #include "winrt/Windows.Foundation.h"
 #include "winrt/Windows.Media.Core.h"
 #include "winrt/Windows.Media.Playback.h"
@@ -12,6 +13,7 @@
 
 using namespace winrt;
 using namespace winrt::TwitchTTS::implementation;
+using namespace winrt::Windows::Devices::Enumeration;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Media::Core;
 using namespace winrt::Windows::Media::Playback;
@@ -36,6 +38,7 @@ namespace winrt::TwitchTTS::implementation {
 
   IMapView<hstring, ViewManagerPropertyType> TextToSpeechViewManager::NativeProps() noexcept {
     auto nativeProps = single_threaded_map<hstring, ViewManagerPropertyType>();
+    nativeProps.Insert(L"audioOutputID", ViewManagerPropertyType::String);
     nativeProps.Insert(L"text", ViewManagerPropertyType::String);
     nativeProps.Insert(L"voiceID", ViewManagerPropertyType::String);
     return nativeProps.GetView();
@@ -46,12 +49,16 @@ namespace winrt::TwitchTTS::implementation {
     IJSValueReader const &propertyMapReader) noexcept {
     if (auto element = view.try_as<MediaPlayerElement>()) {
       const JSValueObject &propertyMap = JSValue::ReadObjectFrom(propertyMapReader);
+      hstring audioOutputID;
       hstring text;
       hstring voiceID;
       for (auto const &pair : propertyMap) {
         auto const &propertyName = pair.first;
         auto const &propertyValue = pair.second;
-        if (propertyName == "text") {
+        if (propertyName == "audioOutputID") {
+          audioOutputID = to_hstring(propertyValue.AsJSString());
+        }
+        else if (propertyName == "text") {
           text = to_hstring(propertyValue.AsJSString());
         }
         else if (propertyName == "voiceID") {
@@ -61,7 +68,7 @@ namespace winrt::TwitchTTS::implementation {
       if (!text.empty()) {
         MediaPlayer mediaPlayer = MediaPlayer();
         element.SetMediaPlayer(mediaPlayer);
-        Speak(mediaPlayer, text, voiceID);
+        Speak(mediaPlayer, text, voiceID, audioOutputID);
       }
     }
   }
@@ -69,7 +76,8 @@ namespace winrt::TwitchTTS::implementation {
   IAsyncAction TextToSpeechViewManager::Speak(
     MediaPlayer const mediaPlayer,
     hstring const text,
-    hstring const voiceID
+    hstring const voiceID,
+    hstring const audioOutputID
   ) noexcept {
     SpeechSynthesizer synthesizer = SpeechSynthesizer();
     if (!voiceID.empty()) {
@@ -81,6 +89,15 @@ namespace winrt::TwitchTTS::implementation {
       }
     }
     SpeechSynthesisStream audioStream = co_await synthesizer.SynthesizeTextToStreamAsync(text);
+    if (!audioOutputID.empty()) {
+      DeviceInformationCollection devices = co_await DeviceInformation::FindAllAsync(DeviceClass::AudioRender);
+      for (DeviceInformation const deviceInfo : devices) {
+        if (deviceInfo.Id() == audioOutputID) {
+          mediaPlayer.AudioDevice(deviceInfo);
+          break;
+        }
+      }
+    }
     mediaPlayer.Source(MediaSource::CreateFromStream(audioStream, audioStream.ContentType()));
     mediaPlayer.Play();
   }

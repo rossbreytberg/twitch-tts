@@ -21,7 +21,7 @@ export default (): React.Node => {
   const dispatch = useDispatch();
   useEffect(() => {
     async function fetchVoiceOptions() {
-      const voices = await NativeModules.SpeechSynthesizerVoices.getAllVoices();
+      const voices = await NativeModules.TextToSpeech.getVoices();
       dispatch(voiceOptionsSet(voices));
     }
     fetchVoiceOptions();

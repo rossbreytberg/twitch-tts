@@ -5,6 +5,7 @@
 import * as React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
+import AudioOutputSelector from './AudioOutputSelector.react';
 import ChannelDisplay from './ChannelDisplay.react';
 import ChannelInput from './ChannelInput.react';
 import MessageDisplay from './MessageDisplay.react';
@@ -31,6 +32,8 @@ export default (): React.Node => {
               <Title>{'Settings'}</Title>
               <Subtitle>{'Channel'}</Subtitle>
               <ChannelInput />
+              <Subtitle>{'Audio Output'}</Subtitle>
+              <AudioOutputSelector />
               <Subtitle>{'Voices'}</Subtitle>
               <VoiceSelector />
               <Subtitle>{'Word Filters'}</Subtitle>

@@ -36,6 +36,7 @@ namespace winrt::TwitchTTS::implementation {
       IAsyncAction Speak(
         MediaPlayer const mediaPlayer,
         hstring const text,
-        hstring const voiceID) noexcept;
+        hstring const voiceID,
+        hstring const audioOutputID) noexcept;
   };
 }

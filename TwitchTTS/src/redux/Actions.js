@@ -2,9 +2,33 @@
  * @flow
  */
 
-import type {Message, PersistentState, State, VoiceOption} from './Reducer';
+import type {
+  AudioOutputOption,
+  Message,
+  PersistentState,
+  State,
+  VoiceOption,
+} from './Reducer';
 
 import {createAction} from '@reduxjs/toolkit';
+
+export type AudioOutputSelectedIDSetAction = {
+  type: 'audioOutputs/selected/set',
+  payload: ?string,
+};
+export const audioOutputSelectedIDSet = createAction(
+  'audioOutputs/selected/set',
+  (selectedAudioOutputID: ?string) => ({payload: selectedAudioOutputID}),
+);
+
+export type AudioOutputOptionsSetAction = {
+  type: 'audioOutputs/options/set',
+  payload: Array<AudioOutputOption>,
+};
+export const audioOutputOptionsSet = createAction(
+  'audioOutputs/options/set',
+  (audioOutputs: Array<AudioOutputOption>) => ({payload: audioOutputs}),
+);
 
 export type ChannelNameSetAction = {
   type: 'channelName/set',

@@ -2,7 +2,22 @@
  * @flow
  */
 
-import type {Message, PersistentState, State} from './Reducer';
+import type {
+  AudioOutputOption,
+  Message,
+  PersistentState,
+  State,
+} from './Reducer';
+
+export function audioOutputOptionsSelector(
+  state: State,
+): Array<AudioOutputOption> {
+  return state.audioOutputOptions;
+}
+
+export function audioOutputSelectedIDSelector(state: State): ?string {
+  return persistentStateSelector(state).audioOutputSelectedID;
+}
 
 export function channelNameSelector(state: State): string {
   return persistentStateSelector(state).channelName;

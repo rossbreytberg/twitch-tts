@@ -22,7 +22,7 @@
     <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.h">
       <Filter>NativeComponents\TextToSpeech</Filter>
     </ClInclude>
-    <ClInclude Include="NativeModules\SpeechSynthesizerVoices.h">
+    <ClInclude Include="NativeModules\TextToSpeech.h">
       <Filter>NativeModules</Filter>
     </ClInclude>
   </ItemGroup>

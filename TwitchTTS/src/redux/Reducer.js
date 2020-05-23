@@ -3,6 +3,8 @@
  */
 
 import type {
+  AudioOutputOptionsSetAction,
+  AudioOutputSelectedIDSetAction,
   ChannelNameSetAction,
   MessageAddAction,
   PersistentStateSetAction,
@@ -15,6 +17,8 @@ import type {
 
 import {createReducer} from '@reduxjs/toolkit';
 import {
+  audioOutputOptionsSet,
+  audioOutputSelectedIDSet,
   channelNameSet,
   messageAdd,
   persistentStateSet,
@@ -24,6 +28,11 @@ import {
   wordFilterAdd,
   wordFilterRemove,
 } from './Actions';
+
+export type AudioOutputOption = {|
+  id: string,
+  name: string,
+|};
 
 export type Message = {|
   authorColor: string,
@@ -41,6 +50,7 @@ export type VoiceOption = {|
 
 // State that will persist across app restarts
 export type PersistentState = {|
+  audioOutputSelectedID: ?string,
   channelName: string,
   settingsVisible: boolean,
   voiceOptions: Array<
@@ -52,14 +62,17 @@ export type PersistentState = {|
 |};
 
 export type State = {|
+  audioOutputOptions: Array<AudioOutputOption>,
   messages: Array<Message>,
   persistent: PersistentState,
   voiceAssignments: {[userID: string]: string},
 |};
 
 const initialState: State = {
+  audioOutputOptions: [],
   messages: [],
   persistent: {
+    audioOutputSelectedID: null,
     channelName: '',
     settingsVisible: false,
     voiceOptions: [],
@@ -71,6 +84,18 @@ const initialState: State = {
 const MAX_MESSAGE_COUNT: number = 10;
 
 const Reducer = createReducer(initialState, {
+  [audioOutputOptionsSet]: (
+    state: State,
+    action: AudioOutputOptionsSetAction,
+  ): void => {
+    state.audioOutputOptions = action.payload;
+  },
+  [audioOutputSelectedIDSet]: (
+    state: State,
+    action: AudioOutputSelectedIDSetAction,
+  ): void => {
+    state.persistent.audioOutputSelectedID = action.payload;
+  },
   [channelNameSet]: (state: State, action: ChannelNameSetAction): void => {
     state.persistent.channelName = action.payload;
   },

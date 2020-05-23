@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {
+  audioOutputSelectedIDSelector,
   messagesSelector,
   voiceAssignmentSelector,
   wordFilterSelector,
@@ -22,6 +23,7 @@ import {
 const TextToSpeech = requireNativeComponent('TextToSpeech');
 
 export default (): React.Node => {
+  const audioOutputSelectedID = useSelector(audioOutputSelectedIDSelector);
   const messages = useSelector(messagesSelector);
   const voiceAssignments = useSelector(voiceAssignmentSelector);
   const wordFilter = useSelector(wordFilterSelector);
@@ -29,6 +31,7 @@ export default (): React.Node => {
   processedMessages.reverse();
   processedMessages = processedMessages.map(message => ({
     ...message,
+    audioOutputID: audioOutputSelectedID,
     filteredContent: message.content
       .split(' ')
       .map(word => (wordFilter[word] === undefined ? word : wordFilter[word]))
@@ -54,9 +57,14 @@ export default (): React.Node => {
 
 function renderItem(data: {
   index: number,
-  item: Message & {filteredContent: string, voiceID: ?string},
+  item: Message & {
+    audioOutputID: ?string,
+    filteredContent: string,
+    voiceID: ?string,
+  },
 }) {
   const {
+    audioOutputID,
     authorColor,
     authorName,
     content,
@@ -77,7 +85,11 @@ function renderItem(data: {
         <Text>{':'}</Text>
       </View>
       <Text>{content}</Text>
-      <TextToSpeech text={filteredContent} voiceID={voiceID} />
+      <TextToSpeech
+        audioOutputID={audioOutputID}
+        text={filteredContent}
+        voiceID={voiceID}
+      />
     </View>
   );
 }
