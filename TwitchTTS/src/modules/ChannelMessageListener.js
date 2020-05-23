@@ -60,7 +60,8 @@ function onMessage(
   message: string,
   self: boolean,
 ): void {
-  if (channel !== channelName) {
+  // Remove preprended # from channel when comparing
+  if (channel.slice(1).toLowerCase() !== channelName.toLowerCase()) {
     return;
   }
   Store.dispatch(
