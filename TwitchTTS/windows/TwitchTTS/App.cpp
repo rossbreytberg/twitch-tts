@@ -2,11 +2,15 @@
 
 #include "App.h"
 #include "ReactPackageProvider.h"
+#include "winrt/Windows.Foundation.h"
+#include "winrt/Windows.UI.ViewManagement.h"
 
 
 
 using namespace winrt::TwitchTTS;
 using namespace winrt::TwitchTTS::implementation;
+using namespace winrt::Windows::Foundation;
+using namespace winrt::Windows::UI::ViewManagement;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of
@@ -32,6 +36,9 @@ App::App() noexcept
 #else
     InstanceSettings().EnableDeveloperMenu(false);
 #endif
+
+    ApplicationView::PreferredLaunchViewSize(Size(200, 300));
+    ApplicationView::PreferredLaunchWindowingMode(ApplicationViewWindowingMode::PreferredLaunchViewSize);
 
     PackageProviders().Append(make<ReactPackageProvider>()); // Includes all modules in this project
     PackageProviders().Append(winrt::ReactNativeAsyncStorage::ReactPackageProvider());
