@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Switch,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -19,56 +19,47 @@ import {voiceOptionsSelector} from '../redux/Selectors';
 export default (): React.Node => {
   const dispatch = useDispatch();
   const voiceOptions = useSelector(voiceOptionsSelector);
-  const voiceRowData = voiceOptions.map(voiceOption => {
-    return {
-      enabled: voiceOption.enabled,
-      key: voiceOption.id,
-      name: voiceOption.name,
-      onToggle: (enabled: boolean) =>
-        dispatch(voiceEnabledSet(voiceOption.id, enabled)),
-      // Cannot disable voice if it is the only one enabled
-      toggleDisabled:
-        voiceOption.enabled &&
-        voiceOptions.filter(voiceOption => voiceOption.enabled).length < 2,
-    };
-  });
-  if (voiceRowData.length === 0) {
-    return null;
+  if (voiceOptions.length === 0) {
+    return <Text>{'No voices available.'}</Text>;
   }
-  return <FlatList data={voiceRowData} renderItem={renderItem} />;
+  return (
+    <View style={styles.container}>
+      {voiceOptions.map(voiceOption => {
+        const {enabled, id, name} = voiceOption;
+        const onToggle = () => dispatch(voiceEnabledSet(id, !enabled));
+        return (
+          <View key={id} style={styles.voiceOption}>
+            <TouchableOpacity onPress={onToggle}>
+              <View style={styles.switchWithLabel}>
+                <Switch
+                  // Cannot disable voice if it is the only one enabled
+                  disabled={
+                    enabled &&
+                    voiceOptions.filter(option => option.enabled).length < 2
+                  }
+                  onValueChange={onToggle}
+                  value={enabled}
+                />
+                <Text>{name}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        );
+      })}
+    </View>
+  );
 };
 
-function renderItem(data: {
-  index: number,
-  item: {
-    enabled: boolean,
-    name: string,
-    onToggle: (enabled: boolean) => void,
-    toggleDisabled: boolean,
-  },
-}): React.Node {
-  const {
-    index,
-    item: {enabled, name, onToggle, toggleDisabled},
-  } = data;
-  return (
-    <TouchableHighlight onPress={() => onToggle(!enabled)}>
-      <View style={styles.voiceRow}>
-        <Text>{name}</Text>
-        <Switch
-          disabled={toggleDisabled}
-          onValueChange={onToggle}
-          value={enabled}
-        />
-      </View>
-    </TouchableHighlight>
-  );
-}
-
 const styles = StyleSheet.create({
-  voiceRow: {
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  switchWithLabel: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+  },
+  voiceOption: {
+    width: 200,
   },
 });
