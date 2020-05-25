@@ -23,9 +23,7 @@ import {
 
 const TextToSpeech = requireNativeComponent('TextToSpeech');
 
-export default (props: {
-  style: $PropertyType<React.ElementProps<typeof View>, 'style'>,
-}): React.Node => {
+export default (): React.Node => {
   const dispatch = useDispatch();
   const audioOutputSelectedID = useSelector(audioOutputSelectedIDSelector);
   const messages = useSelector(messagesSelector);

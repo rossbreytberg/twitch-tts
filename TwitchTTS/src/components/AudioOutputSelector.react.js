@@ -2,6 +2,8 @@
  * @flow
  */
 
+import type {AudioOutputOption} from '../redux/Reducer';
+
 import {Picker} from '@react-native-community/picker';
 import * as React from 'react';
 import {NativeModules} from 'react-native';
@@ -37,7 +39,7 @@ export default (): React.Node => {
   );
 };
 
-function getDefaultAudioOutputOption(): React.Node {
+function getDefaultAudioOutputOption(): AudioOutputOption {
   return {
     id: 'default',
     name: 'Default',
