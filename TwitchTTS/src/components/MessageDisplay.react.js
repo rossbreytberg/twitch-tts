@@ -51,7 +51,7 @@ export default (props: {
       renderItem={renderItem}
       ListEmptyComponent={
         <View style={styles.placeholder}>
-          <Text>{'Chat messages will appear here.'}</Text>
+          <Text>{'Chat messages will appear here'}</Text>
         </View>
       }
     />

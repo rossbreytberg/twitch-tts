@@ -20,7 +20,7 @@ export default (): React.Node => {
   const dispatch = useDispatch();
   const voiceOptions = useSelector(voiceOptionsSelector);
   if (voiceOptions.length === 0) {
-    return <Text>{'No voices available.'}</Text>;
+    return <Text>{'No voices available'}</Text>;
   }
   return (
     <View style={styles.container}>
