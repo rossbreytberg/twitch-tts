@@ -19,39 +19,41 @@ import {settingsVisibleSelector} from '../redux/Selectors';
 export default (): React.Node => {
   const settingsVisible = useSelector(settingsVisibleSelector);
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.header}>
         <ChannelDisplay />
         <SettingsVisibleToggle />
       </View>
-      <ScrollView>
-        <View style={styles.container}>
+      {settingsVisible ? (
+        <ScrollView>
+          <View style={[styles.messages, styles.messagesPartialHeight]}>
+            <MessageDisplay />
+          </View>
+          <View style={styles.settings}>
+            <Title>{'Settings'}</Title>
+            <Subtitle>{'Channel'}</Subtitle>
+            <ChannelInput />
+            <Subtitle>{'Audio Output'}</Subtitle>
+            <AudioOutputSelector />
+            <Subtitle>{'Voices'}</Subtitle>
+            <VoiceSelector />
+            <Subtitle>{'Word Filters'}</Subtitle>
+            <WordFilterDisplay />
+            <WordFilterInput />
+          </View>
+        </ScrollView>
+      ) : (
+        <View style={[styles.messages, styles.messagesFullHeight]}>
           <MessageDisplay />
-          {settingsVisible && (
-            <View style={styles.settings}>
-              <Title>{'Settings'}</Title>
-              <Subtitle>{'Channel'}</Subtitle>
-              <ChannelInput />
-              <Subtitle>{'Audio Output'}</Subtitle>
-              <AudioOutputSelector />
-              <Subtitle>{'Voices'}</Subtitle>
-              <VoiceSelector />
-              <Subtitle>{'Word Filters'}</Subtitle>
-              <WordFilterDisplay />
-              <WordFilterInput />
-            </View>
-          )}
         </View>
-      </ScrollView>
-    </>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    padding: 12,
-    paddingTop: 24,
+    paddingTop: 32,
   },
   header: {
     alignItems: 'center',
@@ -68,7 +70,23 @@ const styles = StyleSheet.create({
     top: 0,
     zIndex: 1,
   },
+  messages: {
+    marginHorizontal: 12,
+    paddingVertical: 12,
+  },
+  messagesFullHeight: {
+    height: '100%',
+  },
+  messagesPartialHeight: {
+    height: 200,
+  },
   settings: {
-    marginTop: 12,
+    borderColor: {
+      windowsbrush: 'SystemControlForegroundChromeMediumBrush',
+    },
+    borderStyle: 'solid',
+    borderTopWidth: 1,
+    marginHorizontal: 12,
+    paddingVertical: 12,
   },
 });

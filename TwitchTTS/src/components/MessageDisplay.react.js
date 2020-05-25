@@ -23,7 +23,9 @@ import {
 
 const TextToSpeech = requireNativeComponent('TextToSpeech');
 
-export default (): React.Node => {
+export default (props: {
+  style: $PropertyType<React.ElementProps<typeof View>, 'style'>,
+}): React.Node => {
   const dispatch = useDispatch();
   const audioOutputSelectedID = useSelector(audioOutputSelectedIDSelector);
   const messages = useSelector(messagesSelector);
@@ -41,19 +43,17 @@ export default (): React.Node => {
     markRead: () => dispatch(messageMarkRead(message.id)),
     voiceID: voiceAssignments[message.authorID] || null,
   }));
-  if (processedMessages.length === 0) {
-    return (
-      <View style={[styles.container, styles.placeholder]}>
-        <Text>{'Chat messages will appear here.'}</Text>
-      </View>
-    );
-  }
   return (
     <FlatList
+      contentContainerStyle={styles.content}
       data={processedMessages}
       inverted={true}
       renderItem={renderItem}
-      style={styles.container}
+      ListEmptyComponent={
+        <View style={styles.placeholder}>
+          <Text>{'Chat messages will appear here.'}</Text>
+        </View>
+      }
     />
   );
 };
@@ -112,18 +112,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginRight: 4,
   },
-  container: {
-    height: 150,
+  content: {
+    flexGrow: 1,
   },
   message: {
     alignItems: 'flex-start',
     flexDirection: 'row',
   },
   messageContentRead: {
-    opacity: 0.5,
+    opacity: 0.3,
   },
   placeholder: {
     alignItems: 'center',
+    flexGrow: 1,
     justifyContent: 'center',
   },
   time: {
