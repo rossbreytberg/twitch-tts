@@ -14,17 +14,13 @@ type TwitchClient = {
 let channelName: string = '';
 let twitchClient: ?TwitchClient = null;
 
-export function initialize() {
+export async function initialize() {
   channelName = channelNameSelector(Store.getState());
+  await subscribeToMessages();
   Store.subscribe(onStoreUpdate);
 }
 
-async function onStoreUpdate() {
-  const newChannelName = channelNameSelector(Store.getState());
-  if (newChannelName === channelName) {
-    return;
-  }
-  channelName = newChannelName;
+async function subscribeToMessages() {
   if (twitchClient != null) {
     await twitchClient.disconnect();
   }
@@ -41,6 +37,14 @@ async function onStoreUpdate() {
   });
   twitchClient.on('message', onMessage);
   await twitchClient.connect();
+}
+
+async function onStoreUpdate() {
+  const newChannelName = channelNameSelector(Store.getState());
+  if (newChannelName !== channelName) {
+    channelName = newChannelName;
+    await subscribeToMessages();
+  }
 }
 
 function onMessage(
