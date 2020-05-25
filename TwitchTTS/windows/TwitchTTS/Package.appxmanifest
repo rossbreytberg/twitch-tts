@@ -8,15 +8,15 @@
   IgnorableNamespaces="uap mp uap3">
 
  <Identity
-    Name="f6942d16-c39a-483c-82fc-9e7160fd1ed4"
-    Publisher="CN=Ross"
-    Version="1.0.0.0" />
+    Name="16107RossBreytberg.TwitchTTS"
+    Publisher="CN=8C3455C1-B52D-4009-A7EE-09A46222E635"
+    Version="2.0.22.0" />
 
-  <mp:PhoneIdentity PhoneProductId="f6942d16-c39a-483c-82fc-9e7160fd1ed4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="34fe3118-320f-4cb2-92c7-7833a73a4563" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>TwitchTTS</DisplayName>
-    <PublisherDisplayName>Ross</PublisherDisplayName>
+    <DisplayName>Twitch TTS</DisplayName>
+    <PublisherDisplayName>Ross Breytberg</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
