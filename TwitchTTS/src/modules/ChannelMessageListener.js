@@ -17,12 +17,14 @@ let twitchClient: ?TwitchClient = null;
 export async function initialize() {
   channelName = channelNameSelector(Store.getState());
   await subscribeToMessages();
-  Store.subscribe(onStoreUpdate);
+  Store.subscribe(() => {
+    onStoreUpdate();
+  });
 }
 
 async function subscribeToMessages() {
   if (twitchClient != null) {
-    await twitchClient.disconnect();
+    twitchClient.disconnect();
   }
   if (channelName === '') {
     twitchClient = null;
