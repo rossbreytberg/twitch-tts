@@ -5,6 +5,7 @@
 #include "winrt/Windows.Media.Playback.h"
 #include "winrt/Windows.Media.SpeechSynthesis.h"
 #include "winrt/Windows.Storage.Streams.h"
+#include "winrt/Windows.UI.Core.h"
 #include "winrt/Windows.UI.Xaml.h"
 #include "winrt/Windows.UI.Xaml.Controls.h"
 #include "JSValueReader.h"
@@ -19,6 +20,7 @@ using namespace winrt::Windows::Media::Core;
 using namespace winrt::Windows::Media::Playback;
 using namespace winrt::Windows::Media::SpeechSynthesis;
 using namespace winrt::Windows::Storage::Streams;
+using namespace winrt::Windows::UI::Core;
 using namespace winrt::Windows::UI::Xaml;
 using namespace winrt::Windows::UI::Xaml::Controls;
 
@@ -31,7 +33,18 @@ namespace winrt::TwitchTTS::implementation {
   }
 
   FrameworkElement TextToSpeechViewManager::CreateView() noexcept {
+    m_uiDispatcher = CoreWindow::GetForCurrentThread().Dispatcher();
     return MediaPlayerElement();
+  }
+
+  // IViewManagerWithReactContext
+
+  IReactContext TextToSpeechViewManager::ReactContext() noexcept {
+    return m_reactContext;
+  }
+
+  void TextToSpeechViewManager::ReactContext(IReactContext reactContext) noexcept {
+    m_reactContext = reactContext;
   }
 
   // IViewManagerWithNativeProperties
@@ -68,6 +81,11 @@ namespace winrt::TwitchTTS::implementation {
       if (!text.empty()) {
         MediaPlayer mediaPlayer = MediaPlayer();
         element.SetMediaPlayer(mediaPlayer);
+        mediaPlayer.MediaEnded([&, element](MediaPlayer mediaPlayer, IInspectable value) {
+          m_uiDispatcher.RunAsync(CoreDispatcherPriority::Normal, [&, element]() {
+            ReactContext().DispatchEvent(element, L"topEnd", nullptr);
+          });
+        });
         Speak(mediaPlayer, text, voiceID, audioOutputID);
       }
     }
@@ -100,5 +118,17 @@ namespace winrt::TwitchTTS::implementation {
     }
     mediaPlayer.Source(MediaSource::CreateFromStream(audioStream, audioStream.ContentType()));
     mediaPlayer.Play();
+  }
+
+  // IViewManagerWithExportedEventTypeConstants
+
+  ConstantProviderDelegate TextToSpeechViewManager::ExportedCustomBubblingEventTypeConstants() noexcept {
+    return nullptr;
+  }
+
+  ConstantProviderDelegate TextToSpeechViewManager::ExportedCustomDirectEventTypeConstants() noexcept {
+    return [](IJSValueWriter const& constantWriter) {
+      WriteCustomDirectEventTypeConstant(constantWriter, "End");
+    };
   }
 }

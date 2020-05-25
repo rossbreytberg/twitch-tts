@@ -12,7 +12,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {messageMarkRead} from '../redux/Actions';
 import {
   audioOutputSelectedIDSelector,
   messagesSelector,
@@ -23,6 +24,7 @@ import {
 const TextToSpeech = requireNativeComponent('TextToSpeech');
 
 export default (): React.Node => {
+  const dispatch = useDispatch();
   const audioOutputSelectedID = useSelector(audioOutputSelectedIDSelector);
   const messages = useSelector(messagesSelector);
   const voiceAssignments = useSelector(voiceAssignmentSelector);
@@ -36,6 +38,7 @@ export default (): React.Node => {
       .split(' ')
       .map(word => (wordFilter[word] === undefined ? word : wordFilter[word]))
       .join(' '),
+    markRead: () => dispatch(messageMarkRead(message.id)),
     voiceID: voiceAssignments[message.authorID] || null,
   }));
   if (processedMessages.length === 0) {
@@ -60,6 +63,7 @@ function renderItem(data: {
   item: Message & {
     audioOutputID: ?string,
     filteredContent: string,
+    markRead: () => void,
     voiceID: ?string,
   },
 }) {
@@ -70,6 +74,8 @@ function renderItem(data: {
     content,
     filteredContent,
     id,
+    markRead,
+    read,
     timestamp,
     voiceID,
   } = data.item;
@@ -84,12 +90,15 @@ function renderItem(data: {
         <Text style={[styles.author, {color: authorColor}]}>{authorName}</Text>
         <Text>{':'}</Text>
       </View>
-      <Text>{content}</Text>
-      <TextToSpeech
-        audioOutputID={audioOutputID}
-        text={filteredContent}
-        voiceID={voiceID}
-      />
+      <Text style={read === true && styles.messageContentRead}>{content}</Text>
+      {read !== true && (
+        <TextToSpeech
+          audioOutputID={audioOutputID}
+          onEnd={markRead}
+          text={filteredContent}
+          voiceID={voiceID}
+        />
+      )}
     </View>
   );
 }
@@ -109,6 +118,9 @@ const styles = StyleSheet.create({
   message: {
     alignItems: 'flex-start',
     flexDirection: 'row',
+  },
+  messageContentRead: {
+    opacity: 0.5,
   },
   placeholder: {
     alignItems: 'center',

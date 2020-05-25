@@ -47,6 +47,17 @@ export const messageAdd = createAction('message/add', (message: Message) => ({
   payload: message,
 }));
 
+export type MessageMarkReadAction = {
+  type: 'message/markRead',
+  payload: string,
+};
+export const messageMarkRead = createAction(
+  'message/markRead',
+  (messageID: string) => ({
+    payload: messageID,
+  }),
+);
+
 export type PersistentStateSetAction = {
   type: 'persistentState/set',
   payload: PersistentState,
