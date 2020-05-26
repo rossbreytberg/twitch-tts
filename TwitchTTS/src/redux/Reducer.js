@@ -7,7 +7,7 @@ import type {
   AudioOutputSelectedIDSetAction,
   ChannelNameSetAction,
   MessageAddAction,
-  MessageMarkReadAction,
+  MessageReadSetAction,
   PersistentStateSetAction,
   SettingsVisibleSetAction,
   VoiceEnabledSetAction,
@@ -22,7 +22,7 @@ import {
   audioOutputSelectedIDSet,
   channelNameSet,
   messageAdd,
-  messageMarkRead,
+  messageReadSet,
   persistentStateSet,
   settingsVisibleSet,
   voiceEnabledSet,
@@ -136,11 +136,16 @@ const Reducer = createReducer(initialState, {
       Math.max(state.messages.length - MAX_MESSAGE_COUNT, 0),
     );
   },
-  [messageMarkRead]: (state: State, action: MessageMarkReadAction): void => {
+  [messageReadSet]: (state: State, action: MessageReadSetAction): void => {
+    const {messageID, read} = action.payload;
     for (let i = 0; i < state.messages.length; i++) {
       const message = state.messages[i];
-      if (message.id === action.payload) {
-        message.read = true;
+      if (message.id === messageID) {
+        if (read) {
+          message.read = true;
+        } else {
+          delete message['read'];
+        }
         break;
       }
     }

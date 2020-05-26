@@ -60,6 +60,7 @@ namespace winrt::TwitchTTS::implementation {
   IMapView<hstring, ViewManagerPropertyType> TextToSpeechViewManager::NativeProps() noexcept {
     auto nativeProps = single_threaded_map<hstring, ViewManagerPropertyType>();
     nativeProps.Insert(L"audioOutputID", ViewManagerPropertyType::String);
+    nativeProps.Insert(L"paused", ViewManagerPropertyType::String);
     nativeProps.Insert(L"text", ViewManagerPropertyType::String);
     nativeProps.Insert(L"voiceID", ViewManagerPropertyType::String);
     return nativeProps.GetView();
@@ -73,11 +74,15 @@ namespace winrt::TwitchTTS::implementation {
       hstring audioOutputID;
       hstring text;
       hstring voiceID;
+      boolean paused;
       for (auto const &pair : propertyMap) {
         auto const &propertyName = pair.first;
         auto const &propertyValue = pair.second;
         if (propertyName == "audioOutputID") {
           audioOutputID = to_hstring(propertyValue.AsJSString());
+        }
+        else if (propertyName == "paused") {
+          paused = propertyValue.AsJSBoolean();
         }
         else if (propertyName == "text") {
           text = to_hstring(propertyValue.AsJSString());
@@ -86,8 +91,13 @@ namespace winrt::TwitchTTS::implementation {
           voiceID = to_hstring(propertyValue.AsJSString());
         }
       }
-      if (!text.empty()) {
+      if (!text.empty() && !paused) {
         Speak(text, voiceID, audioOutputID);
+      } else if (paused == true) {
+        m_mediaPlayer.Pause();
+      }
+      else if (paused == false) {
+        m_mediaPlayer.Play();
       }
     }
   }

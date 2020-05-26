@@ -47,14 +47,17 @@ export const messageAdd = createAction('message/add', (message: Message) => ({
   payload: message,
 }));
 
-export type MessageMarkReadAction = {
-  type: 'message/markRead',
-  payload: string,
+export type MessageReadSetAction = {
+  type: 'message/read/set',
+  payload: {
+    messageID: string,
+    read: boolean,
+  },
 };
-export const messageMarkRead = createAction(
-  'message/markRead',
-  (messageID: string) => ({
-    payload: messageID,
+export const messageReadSet = createAction(
+  'message/read/set',
+  (messageID: string, read: boolean) => ({
+    payload: {messageID, read},
   }),
 );
 

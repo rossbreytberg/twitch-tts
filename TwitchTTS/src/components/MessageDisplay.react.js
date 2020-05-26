@@ -10,10 +10,11 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {messageMarkRead} from '../redux/Actions';
+import {messageReadSet} from '../redux/Actions';
 import {
   audioOutputSelectedIDSelector,
   messagesSelector,
@@ -38,7 +39,8 @@ export default (): React.Node => {
       .split(' ')
       .map(word => (wordFilter[word] === undefined ? word : wordFilter[word]))
       .join(' '),
-    markRead: () => dispatch(messageMarkRead(message.id)),
+    messageReadSet: (read: boolean) =>
+      dispatch(messageReadSet(message.id, read)),
     voiceID: voiceAssignments[message.authorID] || null,
   }));
   return (
@@ -61,7 +63,7 @@ function renderItem(data: {
   item: Message & {
     audioOutputID: ?string,
     filteredContent: string,
-    markRead: () => void,
+    messageReadSet: (read: boolean) => void,
     voiceID: ?string,
   },
 }) {
@@ -72,7 +74,7 @@ function renderItem(data: {
     content,
     filteredContent,
     id,
-    markRead,
+    messageReadSet,
     read,
     timestamp,
     voiceID,
@@ -88,15 +90,18 @@ function renderItem(data: {
         <Text style={[styles.author, {color: authorColor}]}>{authorName}</Text>
         <Text>{':'}</Text>
       </View>
-      <Text style={read === true && styles.messageContentRead}>{content}</Text>
-      {read !== true && (
-        <TextToSpeech
-          audioOutputID={audioOutputID}
-          onEnd={markRead}
-          text={filteredContent}
-          voiceID={voiceID}
-        />
-      )}
+      <TouchableOpacity onPress={() => messageReadSet(!read)}>
+        <Text style={read === true && styles.messageContentRead}>
+          {content}
+        </Text>
+      </TouchableOpacity>
+      <TextToSpeech
+        audioOutputID={audioOutputID}
+        onEnd={() => messageReadSet(true)}
+        paused={read === true}
+        text={filteredContent}
+        voiceID={voiceID}
+      />
     </View>
   );
 }
