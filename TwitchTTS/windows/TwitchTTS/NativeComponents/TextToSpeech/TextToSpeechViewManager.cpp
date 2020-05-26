@@ -74,7 +74,7 @@ namespace winrt::TwitchTTS::implementation {
       hstring audioOutputID;
       hstring text;
       hstring voiceID;
-      boolean paused;
+      bool paused;
       for (auto const &pair : propertyMap) {
         auto const &propertyName = pair.first;
         auto const &propertyValue = pair.second;
