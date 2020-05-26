@@ -48,10 +48,10 @@ namespace winrt::TwitchTTS::implementation {
       ConstantProviderDelegate ExportedCustomDirectEventTypeConstants() noexcept;
 
     private:
-      IReactContext m_reactContext{ nullptr };
+      IReactContext m_reactContext = nullptr;
       CoreDispatcher m_uiDispatcher = nullptr;
+      MediaPlayer m_mediaPlayer = nullptr;
       IAsyncAction Speak(
-        MediaPlayer const mediaPlayer,
         hstring const text,
         hstring const voiceID,
         hstring const audioOutputID) noexcept;

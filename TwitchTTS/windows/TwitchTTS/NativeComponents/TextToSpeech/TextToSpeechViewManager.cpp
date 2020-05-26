@@ -34,7 +34,15 @@ namespace winrt::TwitchTTS::implementation {
 
   FrameworkElement TextToSpeechViewManager::CreateView() noexcept {
     m_uiDispatcher = CoreWindow::GetForCurrentThread().Dispatcher();
-    return MediaPlayerElement();
+    MediaPlayerElement mediaPlayerElement = MediaPlayerElement();
+    m_mediaPlayer = MediaPlayer();
+    mediaPlayerElement.SetMediaPlayer(m_mediaPlayer);
+    m_mediaPlayer.MediaEnded([&, mediaPlayerElement](MediaPlayer mediaPlayer, IInspectable value) {
+      m_uiDispatcher.RunAsync(CoreDispatcherPriority::Normal, [&, mediaPlayerElement]() {
+        ReactContext().DispatchEvent(mediaPlayerElement, L"topEnd", nullptr);
+      });
+    });
+    return mediaPlayerElement;
   }
 
   // IViewManagerWithReactContext
@@ -79,20 +87,12 @@ namespace winrt::TwitchTTS::implementation {
         }
       }
       if (!text.empty()) {
-        MediaPlayer mediaPlayer = MediaPlayer();
-        element.SetMediaPlayer(mediaPlayer);
-        mediaPlayer.MediaEnded([&, element](MediaPlayer mediaPlayer, IInspectable value) {
-          m_uiDispatcher.RunAsync(CoreDispatcherPriority::Normal, [&, element]() {
-            ReactContext().DispatchEvent(element, L"topEnd", nullptr);
-          });
-        });
-        Speak(mediaPlayer, text, voiceID, audioOutputID);
+        Speak(text, voiceID, audioOutputID);
       }
     }
   }
 
   IAsyncAction TextToSpeechViewManager::Speak(
-    MediaPlayer const mediaPlayer,
     hstring const text,
     hstring const voiceID,
     hstring const audioOutputID
@@ -111,13 +111,13 @@ namespace winrt::TwitchTTS::implementation {
       DeviceInformationCollection devices = co_await DeviceInformation::FindAllAsync(DeviceClass::AudioRender);
       for (DeviceInformation const deviceInfo : devices) {
         if (deviceInfo.Id() == audioOutputID) {
-          mediaPlayer.AudioDevice(deviceInfo);
+          m_mediaPlayer.AudioDevice(deviceInfo);
           break;
         }
       }
     }
-    mediaPlayer.Source(MediaSource::CreateFromStream(audioStream, audioStream.ContentType()));
-    mediaPlayer.Play();
+    m_mediaPlayer.Source(MediaSource::CreateFromStream(audioStream, audioStream.ContentType()));
+    m_mediaPlayer.Play();
   }
 
   // IViewManagerWithExportedEventTypeConstants
