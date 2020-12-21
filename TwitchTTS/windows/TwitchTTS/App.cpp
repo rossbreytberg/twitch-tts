@@ -42,9 +42,6 @@ App::App() noexcept
     InstanceSettings().UseDeveloperSupport(false);
 #endif
 
-    ApplicationView::PreferredLaunchViewSize(Size(200, 300));
-    ApplicationView::PreferredLaunchWindowingMode(ApplicationViewWindowingMode::PreferredLaunchViewSize);
-
     RegisterAutolinkedNativeModulePackages(PackageProviders()); // Includes any autolinked modules
 
     PackageProviders().Append(make<ReactPackageProvider>()); // Includes all modules in this project
@@ -66,6 +63,10 @@ void App::OnLaunched(activation::LaunchActivatedEventArgs const& e)
 
     Frame rootFrame = Window::Current().Content().as<Frame>();
     rootFrame.Navigate(xaml_typename<TwitchTTS::MainPage>(), box_value(e.Arguments()));
+
+    ApplicationView::GetForCurrentView().SetPreferredMinSize(Size(350, 400));
+    ApplicationView::PreferredLaunchViewSize(Size(350, 400));
+    ApplicationView::PreferredLaunchWindowingMode(ApplicationViewWindowingMode::PreferredLaunchViewSize);
 }
 
 /// <summary>

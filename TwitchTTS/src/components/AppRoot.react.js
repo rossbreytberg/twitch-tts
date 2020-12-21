@@ -32,7 +32,7 @@ export default (): React.Node => {
       </ImageBackground>
       {settingsVisible ? (
         <ScrollView>
-          <View style={styles.messagesPartialHeight}>
+          <View style={styles.messagesAboveSettings}>
             <MessageDisplay />
           </View>
           <View style={styles.settings}>
@@ -49,9 +49,7 @@ export default (): React.Node => {
           </View>
         </ScrollView>
       ) : (
-        <View style={styles.messagesFullHeight}>
-          <MessageDisplay />
-        </View>
+        <MessageDisplay />
       )}
     </View>
   );
@@ -59,6 +57,7 @@ export default (): React.Node => {
 
 const styles = StyleSheet.create({
   container: {
+    height: '100%',
     paddingTop: 32,
   },
   header: {
@@ -73,10 +72,7 @@ const styles = StyleSheet.create({
     top: 0,
     zIndex: 1,
   },
-  messagesFullHeight: {
-    height: '100%',
-  },
-  messagesPartialHeight: {
+  messagesAboveSettings: {
     height: 200,
   },
   settings: {
