@@ -41,7 +41,6 @@ export default (): React.Node => {
       dispatch(messageReadSet(message.id, read)),
     voiceID: voiceAssignments[message.authorID] || null,
   }));
-  console.log('MESSAGES', serializeMessagesForMemo(messages));
   return useMemo(
     () => (
       <FlatList
