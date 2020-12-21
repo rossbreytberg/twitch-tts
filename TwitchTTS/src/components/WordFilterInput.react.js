@@ -29,7 +29,7 @@ export default (): React.Node => {
         onSubmitEditing={() => {
           substitutionInput.current && substitutionInput.current.focus();
         }}
-        placeholder="Word"
+        placeholder="Word or Regex"
         style={styles.wordInput}
         value={word}
       />
