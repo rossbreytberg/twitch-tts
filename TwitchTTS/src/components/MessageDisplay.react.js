@@ -2,7 +2,7 @@
  * @flow
  */
 
-import type {Message} from '../redux/Reducer';
+import type {Message, WordFilter} from '../redux/Reducer';
 
 import * as React from 'react';
 import {
@@ -32,13 +32,10 @@ export default (): React.Node => {
   const wordFilter = useSelector(wordFilterSelector);
   let processedMessages = Array.from(messages);
   processedMessages.reverse();
-  processedMessages = processedMessages.map(message => ({
+  processedMessages = processedMessages.map((message) => ({
     ...message,
     audioOutputID: audioOutputSelectedID,
-    filteredContent: message.content
-      .split(' ')
-      .map(word => (wordFilter[word] === undefined ? word : wordFilter[word]))
-      .join(' '),
+    filteredContent: getFilteredContent(message.content, wordFilter),
     messageReadSet: (read: boolean) =>
       dispatch(messageReadSet(message.id, read)),
     voiceID: voiceAssignments[message.authorID] || null,
@@ -58,6 +55,31 @@ export default (): React.Node => {
   );
 };
 
+function getFilteredContent(content: string, wordFilter: WordFilter): string {
+  let filteredContent = content;
+  console.log('START', filteredContent);
+  const wordsOrPatterns = Object.keys(wordFilter);
+  for (let i = 0; i < wordsOrPatterns.length; i++) {
+    const wordOrPattern = wordsOrPatterns[i];
+    const substitution = wordFilter[wordOrPattern];
+    const isPattern =
+      wordOrPattern.slice(0, 1) === '/' && wordOrPattern.slice(-1) === '/';
+    if (isPattern) {
+      filteredContent = filteredContent.replace(
+        new RegExp(wordOrPattern.slice(1, -1), 'g'),
+        substitution,
+      );
+    } else {
+      filteredContent = filteredContent
+        .split(' ')
+        .map((word) => (word === wordOrPattern ? substitution : word))
+        .join(' ');
+    }
+  }
+  console.log('END', filteredContent);
+  return filteredContent;
+}
+
 function renderItem(data: {
   index: number,
   item: Message & {
@@ -66,7 +88,7 @@ function renderItem(data: {
     messageReadSet: (read: boolean) => void,
     voiceID: ?string,
   },
-}) {
+}): React.Node {
   const {
     audioOutputID,
     authorColor,

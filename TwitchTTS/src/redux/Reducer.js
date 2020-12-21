@@ -51,6 +51,8 @@ export type VoiceOption = {|
   name: string,
 |};
 
+export type WordFilter = {[word: string]: string};
+
 // State that will persist across app restarts
 export type PersistentState = {|
   audioOutputSelectedID: ?string,
@@ -61,7 +63,7 @@ export type PersistentState = {|
       enabled: boolean,
     |},
   >,
-  wordFilter: {[word: string]: string},
+  wordFilter: WordFilter,
 |};
 
 export type State = {|
@@ -110,20 +112,20 @@ const Reducer = createReducer(initialState, {
     const authorID = action.payload.authorID;
     let authorVoiceID = state.voiceAssignments[authorID];
     const enabledVoiceIDs = state.persistent.voiceOptions
-      .filter(voiceOption => voiceOption.enabled)
-      .map(voiceOption => voiceOption.id);
+      .filter((voiceOption) => voiceOption.enabled)
+      .map((voiceOption) => voiceOption.id);
     if (
       authorVoiceID === undefined ||
       !enabledVoiceIDs.includes(authorVoiceID)
     ) {
       const assignedVoiceIDs = {};
-      Object.values(state.voiceAssignments).forEach(voiceID => {
+      Object.values(state.voiceAssignments).forEach((voiceID) => {
         if (typeof voiceID === 'string') {
           assignedVoiceIDs[voiceID] = true;
         }
       });
       const unassignedVoiceIDs = enabledVoiceIDs.filter(
-        voiceID => assignedVoiceIDs[voiceID] === undefined,
+        (voiceID) => assignedVoiceIDs[voiceID] === undefined,
       );
       state.voiceAssignments[authorID] = getRandomArrayItem(
         unassignedVoiceIDs.length > 0 ? unassignedVoiceIDs : enabledVoiceIDs,
@@ -164,7 +166,7 @@ const Reducer = createReducer(initialState, {
   },
   [voiceEnabledSet]: (state: State, action: VoiceEnabledSetAction): void => {
     state.persistent.voiceOptions = state.persistent.voiceOptions.map(
-      voiceOption => {
+      (voiceOption) => {
         if (voiceOption.id === action.payload.id) {
           voiceOption.enabled = action.payload.enabled;
         }
@@ -176,10 +178,10 @@ const Reducer = createReducer(initialState, {
     // When setting voices, re-use their previous enabled state if there is one
     // Otherwise, voice start enabled by default
     const previousEnabledStateByID: {[id: string]: ?boolean} = {};
-    state.persistent.voiceOptions.forEach(voiceOptionState => {
+    state.persistent.voiceOptions.forEach((voiceOptionState) => {
       previousEnabledStateByID[voiceOptionState.id] = voiceOptionState.enabled;
     });
-    const voiceOptionsWithEnabledState = action.payload.map(voiceOption => {
+    const voiceOptionsWithEnabledState = action.payload.map((voiceOption) => {
       const previousEnabledState = previousEnabledStateByID[voiceOption.id];
       return {
         ...voiceOption,
