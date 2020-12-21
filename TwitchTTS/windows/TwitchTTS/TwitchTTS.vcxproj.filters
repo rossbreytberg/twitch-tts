@@ -12,21 +12,15 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="ReactPackageProvider.cpp" />
     <ClCompile Include="AutolinkedNativeModules.g.cpp" />
-    <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.cpp">
-      <Filter>NativeComponents\TextToSpeech</Filter>
-    </ClCompile>
+    <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="ReactPackageProvider.h" />
     <ClInclude Include="AutolinkedNativeModules.g.h" />
-    <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.h">
-      <Filter>NativeComponents\TextToSpeech</Filter>
-    </ClInclude>
-    <ClInclude Include="NativeModules\TextToSpeech.h">
-      <Filter>NativeModules</Filter>
-    </ClInclude>
+    <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.h" />
+    <ClInclude Include="NativeModules\TextToSpeech.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -207,15 +201,6 @@
   <ItemGroup>
     <Filter Include="Assets">
       <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NativeModules">
-      <UniqueIdentifier>{61f20a75-3150-4a36-93ff-d3a5fdd370bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NativeComponents">
-      <UniqueIdentifier>{2baf77e8-2026-4038-a735-91ff76e26a26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NativeComponents\TextToSpeech">
-      <UniqueIdentifier>{6342093e-ad5b-49fe-82d1-6e0d0735400b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
