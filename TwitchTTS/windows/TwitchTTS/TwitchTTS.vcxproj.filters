@@ -11,6 +11,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="ReactPackageProvider.cpp" />
+    <ClCompile Include="AutolinkedNativeModules.g.cpp" />
     <ClCompile Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.cpp">
       <Filter>NativeComponents\TextToSpeech</Filter>
     </ClCompile>
@@ -19,6 +20,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="ReactPackageProvider.h" />
+    <ClInclude Include="AutolinkedNativeModules.g.h" />
     <ClInclude Include="NativeComponents\TextToSpeech\TextToSpeechViewManager.h">
       <Filter>NativeComponents\TextToSpeech</Filter>
     </ClInclude>
@@ -28,6 +30,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\Square150x150Logo.scale-200.png">
@@ -220,5 +225,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainPage.xaml" />
   </ItemGroup>
 </Project>

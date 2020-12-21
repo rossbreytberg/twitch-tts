@@ -27,5 +27,3 @@
 
 #include <winrt/ReactNativeAsyncStorage.h>
 #include <winrt/ReactNativePicker.h>
-
-#include "nativeModules.g.h"

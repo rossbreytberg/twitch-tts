@@ -4,7 +4,7 @@
 
 import type {AudioOutputOption} from '../redux/Reducer';
 
-import {Picker} from '@react-native-community/picker';
+import {Picker} from '@react-native-picker/picker';
 import * as React from 'react';
 import {NativeModules} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -27,12 +27,12 @@ export default (): React.Node => {
   return (
     <Picker
       selectedValue={selectedID || 'default'}
-      onValueChange={optionID =>
+      onValueChange={(optionID) =>
         dispatch(
           audioOutputSelectedIDSet(optionID === 'default' ? null : optionID),
         )
       }>
-      {audioOutputOptions.map(option => (
+      {audioOutputOptions.map((option) => (
         <Picker.Item key={option.id} label={option.name} value={option.id} />
       ))}
     </Picker>
