@@ -10,7 +10,7 @@
  <Identity
     Name="16107RossBreytberg.TwitchTTS"
     Publisher="CN=8C3455C1-B52D-4009-A7EE-09A46222E635"
-    Version="2.0.27.0" />
+    Version="2.0.30.0" />
 
   <mp:PhoneIdentity PhoneProductId="34fe3118-320f-4cb2-92c7-7833a73a4563" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
