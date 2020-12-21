@@ -5,6 +5,7 @@
 import * as React from 'react';
 import {
   FlatList,
+  PlatformColor,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -17,7 +18,7 @@ import {wordFilterSelector} from '../redux/Selectors';
 export default (): React.Node => {
   const dispatch = useDispatch();
   const wordFilterMap = useSelector(wordFilterSelector);
-  const wordSubstitutions = Object.keys(wordFilterMap).map(word => ({
+  const wordSubstitutions = Object.keys(wordFilterMap).map((word) => ({
     key: word,
     onRemove: () => dispatch(wordFilterRemove(word)),
     substitution: wordFilterMap[word],
@@ -78,9 +79,7 @@ const styles = StyleSheet.create({
   },
   substitution: {
     alignItems: 'center',
-    backgroundColor: {
-      windowsbrush: 'SystemControlForegroundChromeMediumBrush',
-    },
+    backgroundColor: PlatformColor('SystemControlForegroundChromeMediumBrush'),
     flexDirection: 'row',
     flexGrow: 1,
     justifyContent: 'center',

@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {PlatformColor, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Title} from './StyledText.react';
 import {settingsVisibleSet} from '../redux/Actions';
@@ -24,7 +24,7 @@ export default () => {
 
 const styles = StyleSheet.create({
   active: {
-    backgroundColor: {windowsbrush: 'SystemAccentColor'},
+    backgroundColor: PlatformColor('SystemAccentColor'),
     borderRadius: 2,
   },
   gear: {
