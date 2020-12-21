@@ -209,9 +209,6 @@
     <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="MainPage.xaml" />
   </ItemGroup>
 </Project>
