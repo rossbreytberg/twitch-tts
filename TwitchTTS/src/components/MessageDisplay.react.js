@@ -57,7 +57,6 @@ export default (): React.Node => {
 
 function getFilteredContent(content: string, wordFilter: WordFilter): string {
   let filteredContent = content;
-  console.log('START', filteredContent);
   const wordsOrPatterns = Object.keys(wordFilter);
   for (let i = 0; i < wordsOrPatterns.length; i++) {
     const wordOrPattern = wordsOrPatterns[i];
@@ -76,7 +75,6 @@ function getFilteredContent(content: string, wordFilter: WordFilter): string {
         .join(' ');
     }
   }
-  console.log('END', filteredContent);
   return filteredContent;
 }
 
