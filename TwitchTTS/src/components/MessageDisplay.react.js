@@ -42,7 +42,7 @@ export default (): React.Node => {
   }));
   return (
     <FlatList
-      contentContainerStyle={styles.content}
+      contentContainerStyle={styles.container}
       data={processedMessages}
       inverted={true}
       renderItem={renderItem}
@@ -110,8 +110,14 @@ function renderItem(data: {
         <Text style={[styles.author, {color: authorColor}]}>{authorName}</Text>
         <Text>{':'}</Text>
       </View>
-      <TouchableOpacity onPress={() => messageReadSet(!read)}>
-        <Text style={read === true && styles.messageContentRead}>
+      <TouchableOpacity
+        onPress={() => messageReadSet(!read)}
+        style={styles.messageContentWrapper}>
+        <Text
+          style={[
+            styles.messageContent,
+            read === true && styles.messageContentRead,
+          ]}>
           {content}
         </Text>
       </TouchableOpacity>
@@ -135,7 +141,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginRight: 4,
   },
-  content: {
+  container: {
     flexGrow: 1,
   },
   message: {
@@ -144,6 +150,9 @@ const styles = StyleSheet.create({
   },
   messageContentRead: {
     opacity: 0.3,
+  },
+  messageContentWrapper: {
+    flex: 1,
   },
   placeholder: {
     alignItems: 'center',
