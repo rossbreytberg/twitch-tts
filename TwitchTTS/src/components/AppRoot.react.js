@@ -3,7 +3,13 @@
  */
 
 import * as React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {
+  ImageBackground,
+  PlatformColor,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import AudioOutputSelector from './AudioOutputSelector.react';
 import ChannelDisplay from './ChannelDisplay.react';
@@ -20,10 +26,10 @@ export default (): React.Node => {
   const settingsVisible = useSelector(settingsVisibleSelector);
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <ImageBackground style={styles.header}>
         <ChannelDisplay />
         <SettingsVisibleToggle />
-      </View>
+      </ImageBackground>
       {settingsVisible ? (
         <ScrollView>
           <View style={[styles.messages, styles.messagesPartialHeight]}>
@@ -57,9 +63,6 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    backgroundColor: {
-      windowsbrush: 'SystemControlBackgroundAltHighBrush',
-    },
     flexDirection: 'row',
     justifyContent: 'space-between',
     left: 0,
@@ -81,9 +84,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   settings: {
-    borderColor: {
-      windowsbrush: 'SystemControlForegroundChromeMediumBrush',
-    },
+    borderColor: PlatformColor('SystemControlForegroundChromeMediumBrush'),
     borderStyle: 'solid',
     borderTopWidth: 1,
     marginHorizontal: 12,
