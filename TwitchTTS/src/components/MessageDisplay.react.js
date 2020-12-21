@@ -5,6 +5,7 @@
 import type {Message, WordFilter} from '../redux/Reducer';
 
 import * as React from 'react';
+import {useMemo} from 'react';
 import {
   requireNativeComponent,
   FlatList,
@@ -40,20 +41,30 @@ export default (): React.Node => {
       dispatch(messageReadSet(message.id, read)),
     voiceID: voiceAssignments[message.authorID] || null,
   }));
-  return (
-    <FlatList
-      contentContainerStyle={styles.container}
-      data={processedMessages}
-      inverted={true}
-      renderItem={renderItem}
-      ListEmptyComponent={
-        <View style={styles.placeholder}>
-          <Text>{'Chat messages will appear here'}</Text>
-        </View>
-      }
-    />
+  console.log('MESSAGES', serializeMessagesForMemo(messages));
+  return useMemo(
+    () => (
+      <FlatList
+        contentContainerStyle={styles.container}
+        data={processedMessages}
+        inverted={true}
+        renderItem={renderItem}
+        ListEmptyComponent={
+          <View style={styles.placeholder}>
+            <Text>{'Chat messages will appear here'}</Text>
+          </View>
+        }
+      />
+    ),
+    [serializeMessagesForMemo(messages)],
   );
 };
+
+function serializeMessagesForMemo(messages: Array<Message>): string {
+  return messages
+    .map((message) => message.id + (message.read ? 'r' : ''))
+    .toString();
+}
 
 function getFilteredContent(content: string, wordFilter: WordFilter): string {
   let filteredContent = content;
@@ -111,7 +122,8 @@ function renderItem(data: {
         <Text>{':'}</Text>
       </View>
       <TouchableOpacity
-        onPress={() => messageReadSet(!read)}
+        disabled={read}
+        onPress={() => messageReadSet(true)}
         style={styles.messageContentWrapper}>
         <Text
           style={[
