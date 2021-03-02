@@ -77,10 +77,14 @@ function getFilteredContent(content: string, wordFilter: WordFilter): string {
     const isPattern =
       wordOrPattern.slice(0, 1) === '/' && wordOrPattern.slice(-1) === '/';
     if (isPattern) {
-      filteredContent = filteredContent.replace(
-        new RegExp(wordOrPattern.slice(1, -1), 'g'),
-        substitution,
-      );
+      try {
+        filteredContent = filteredContent.replace(
+          new RegExp(wordOrPattern.slice(1, -1), 'g'),
+          substitution,
+        );
+      } catch (e) {
+        // Skip invalid regexp
+      }
     } else {
       filteredContent = filteredContent
         .split(' ')

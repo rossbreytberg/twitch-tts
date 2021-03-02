@@ -160,7 +160,10 @@ const Reducer = createReducer(initialState, {
     state: State,
     action: PersistentStateSetAction,
   ): void => {
-    state.persistent = action.payload;
+    state.persistent = {
+      ...initialState.persistent,
+      ...action.payload,
+    };
   },
   [settingsVisibleSet]: (
     state: State,
