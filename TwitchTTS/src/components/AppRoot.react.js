@@ -18,6 +18,7 @@ import MessageDisplay from './MessageDisplay.react';
 import SettingsVisibleToggle from './SettingsVisibleToggle.react';
 import {Subtitle, Title} from './StyledText.react';
 import VoiceSelector from './VoiceSelector.react';
+import VolumeSlider from './VolumeSlider.react';
 import WordFilterDisplay from './WordFilterDisplay.react';
 import WordFilterInput from './WordFilterInput.react';
 import {settingsVisibleSelector} from '../redux/Selectors';
@@ -39,6 +40,8 @@ export default (): React.Node => {
             <Title>{'Settings'}</Title>
             <Subtitle>{'Channel'}</Subtitle>
             <ChannelInput />
+            <Subtitle>{'Volume'}</Subtitle>
+            <VolumeSlider />
             <Subtitle>{'Audio Output'}</Subtitle>
             <AudioOutputSelector />
             <Subtitle>{'Voices'}</Subtitle>

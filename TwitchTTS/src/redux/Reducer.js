@@ -12,6 +12,7 @@ import type {
   SettingsVisibleSetAction,
   VoiceEnabledSetAction,
   VoiceOptionsSetAction,
+  VolumeSetAction,
   WordFilterAddAction,
   WordFilterRemoveAction,
 } from './Actions';
@@ -27,6 +28,7 @@ import {
   settingsVisibleSet,
   voiceEnabledSet,
   voiceOptionsSet,
+  volumeSet,
   wordFilterAdd,
   wordFilterRemove,
 } from './Actions';
@@ -63,6 +65,7 @@ export type PersistentState = {|
       enabled: boolean,
     |},
   >,
+  volume: number,
   wordFilter: WordFilter,
 |};
 
@@ -81,6 +84,7 @@ const initialState: State = {
     channelName: '',
     settingsVisible: false,
     voiceOptions: [],
+    volume: 100,
     wordFilter: {},
   },
   voiceAssignments: {},
@@ -189,6 +193,9 @@ const Reducer = createReducer(initialState, {
       };
     });
     state.persistent.voiceOptions = voiceOptionsWithEnabledState;
+  },
+  [volumeSet]: (state: State, action: VolumeSetAction): void => {
+    state.persistent.volume = action.payload;
   },
   [wordFilterAdd]: (state: State, action: WordFilterAddAction): void => {
     state.persistent.wordFilter[action.payload.word] =

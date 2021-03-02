@@ -101,6 +101,14 @@ export const voiceOptionsSet = createAction(
   (voiceOptions: Array<VoiceOption>) => ({payload: voiceOptions}),
 );
 
+export type VolumeSetAction = {
+  type: 'volume/set',
+  payload: number,
+};
+export const volumeSet = createAction('volume/set', (volume: number) => ({
+  payload: volume,
+}));
+
 export type WordFilterAddAction = {
   type: 'wordFilter/add',
   payload: {

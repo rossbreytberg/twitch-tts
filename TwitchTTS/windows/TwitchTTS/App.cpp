@@ -46,7 +46,6 @@ App::App() noexcept
 
     PackageProviders().Append(make<ReactPackageProvider>()); // Includes all modules in this project
 
-    PackageProviders().Append(winrt::ReactNativeAsyncStorage::ReactPackageProvider());
     PackageProviders().Append(winrt::ReactNativePicker::ReactPackageProvider());
 
     InitializeComponent();

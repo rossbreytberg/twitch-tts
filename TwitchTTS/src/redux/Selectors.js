@@ -47,6 +47,10 @@ export function voiceOptionsSelector(
   return persistentStateSelector(state).voiceOptions;
 }
 
+export function volumeSelector(state: State): number {
+  return persistentStateSelector(state).volume;
+}
+
 export function wordFilterSelector(
   state: State,
 ): $PropertyType<PersistentState, 'wordFilter'> {

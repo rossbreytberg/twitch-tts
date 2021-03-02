@@ -63,6 +63,7 @@ namespace winrt::TwitchTTS::implementation {
     nativeProps.Insert(L"paused", ViewManagerPropertyType::String);
     nativeProps.Insert(L"text", ViewManagerPropertyType::String);
     nativeProps.Insert(L"voiceID", ViewManagerPropertyType::String);
+    nativeProps.Insert(L"volume", ViewManagerPropertyType::Number);
     return nativeProps.GetView();
   }
 
@@ -74,7 +75,8 @@ namespace winrt::TwitchTTS::implementation {
       hstring audioOutputID;
       hstring text;
       hstring voiceID;
-      bool paused;
+      double volume = 1;
+      bool paused = true;
       for (auto const &pair : propertyMap) {
         auto const &propertyName = pair.first;
         auto const &propertyValue = pair.second;
@@ -90,9 +92,12 @@ namespace winrt::TwitchTTS::implementation {
         else if (propertyName == "voiceID") {
           voiceID = to_hstring(propertyValue.AsJSString());
         }
+        else if (propertyName == "volume") {
+          volume = propertyValue.AsJSNumber();
+        }
       }
       if (!text.empty() && !paused) {
-        Speak(text, voiceID, audioOutputID);
+        Speak(text, voiceID, audioOutputID, volume);
       } else if (paused == true) {
         m_mediaPlayer.Pause();
       }
@@ -105,7 +110,8 @@ namespace winrt::TwitchTTS::implementation {
   IAsyncAction TextToSpeechViewManager::Speak(
     hstring const text,
     hstring const voiceID,
-    hstring const audioOutputID
+    hstring const audioOutputID,
+    double const volume
   ) noexcept {
     SpeechSynthesizer synthesizer = SpeechSynthesizer();
     if (!voiceID.empty()) {
@@ -127,6 +133,7 @@ namespace winrt::TwitchTTS::implementation {
       }
     }
     m_mediaPlayer.Source(MediaSource::CreateFromStream(audioStream, audioStream.ContentType()));
+    m_mediaPlayer.Volume(volume);
     m_mediaPlayer.Play();
   }
 

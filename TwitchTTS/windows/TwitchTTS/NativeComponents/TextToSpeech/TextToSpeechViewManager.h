@@ -54,6 +54,7 @@ namespace winrt::TwitchTTS::implementation {
       IAsyncAction Speak(
         hstring const text,
         hstring const voiceID,
-        hstring const audioOutputID) noexcept;
+        hstring const audioOutputID,
+        double const volume) noexcept;
   };
 }

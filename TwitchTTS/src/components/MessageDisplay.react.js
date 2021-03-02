@@ -20,6 +20,7 @@ import {
   audioOutputSelectedIDSelector,
   messagesSelector,
   voiceAssignmentSelector,
+  volumeSelector,
   wordFilterSelector,
 } from '../redux/Selectors';
 
@@ -30,6 +31,7 @@ export default (): React.Node => {
   const audioOutputSelectedID = useSelector(audioOutputSelectedIDSelector);
   const messages = useSelector(messagesSelector);
   const voiceAssignments = useSelector(voiceAssignmentSelector);
+  const volume = useSelector(volumeSelector);
   const wordFilter = useSelector(wordFilterSelector);
   let processedMessages = Array.from(messages);
   processedMessages.reverse();
@@ -40,6 +42,7 @@ export default (): React.Node => {
     messageReadSet: (read: boolean) =>
       dispatch(messageReadSet(message.id, read)),
     voiceID: voiceAssignments[message.authorID] || null,
+    volume,
   }));
   return useMemo(
     () => (
@@ -95,6 +98,7 @@ function renderItem(data: {
     filteredContent: string,
     messageReadSet: (read: boolean) => void,
     voiceID: ?string,
+    volume: number,
   },
 }): React.Node {
   const {
@@ -108,6 +112,7 @@ function renderItem(data: {
     read,
     timestamp,
     voiceID,
+    volume,
   } = data.item;
   return (
     <View key={id} style={styles.message}>
@@ -138,6 +143,7 @@ function renderItem(data: {
         paused={read === true}
         text={filteredContent}
         voiceID={voiceID}
+        volume={Math.pow(volume, 2) / 10000} // Stretches out lower end of volume adjustment
       />
     </View>
   );
