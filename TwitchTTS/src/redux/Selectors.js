@@ -31,6 +31,10 @@ export function persistentStateSelector(state: State): PersistentState {
   return state.persistent;
 }
 
+export function pronounceNamesSelector(state: State): boolean {
+  return persistentStateSelector(state).pronounceNames;
+}
+
 export function settingsVisibleSelector(state: State): boolean {
   return persistentStateSelector(state).settingsVisible;
 }

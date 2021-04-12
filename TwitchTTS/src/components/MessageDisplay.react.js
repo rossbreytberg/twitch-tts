@@ -19,6 +19,7 @@ import {messageReadSet} from '../redux/Actions';
 import {
   audioOutputSelectedIDSelector,
   messagesSelector,
+  pronounceNamesSelector,
   voiceAssignmentSelector,
   volumeSelector,
   wordFilterSelector,
@@ -30,6 +31,7 @@ export default (): React.Node => {
   const dispatch = useDispatch();
   const audioOutputSelectedID = useSelector(audioOutputSelectedIDSelector);
   const messages = useSelector(messagesSelector);
+  const pronounceNames = useSelector(pronounceNamesSelector);
   const voiceAssignments = useSelector(voiceAssignmentSelector);
   const volume = useSelector(volumeSelector);
   const wordFilter = useSelector(wordFilterSelector);
@@ -38,7 +40,7 @@ export default (): React.Node => {
   processedMessages = processedMessages.map((message) => ({
     ...message,
     audioOutputID: audioOutputSelectedID,
-    filteredContent: getFilteredContent(message.content, wordFilter),
+    contentForAudio: getContentForAudio(message, pronounceNames, wordFilter),
     messageReadSet: (read: boolean) =>
       dispatch(messageReadSet(message.id, read)),
     voiceID: voiceAssignments[message.authorID] || null,
@@ -68,8 +70,12 @@ function serializeMessagesForMemo(messages: Array<Message>): string {
     .toString();
 }
 
-function getFilteredContent(content: string, wordFilter: WordFilter): string {
-  let filteredContent = content;
+function getContentForAudio(
+  message: Message,
+  pronounceNames: boolean,
+  wordFilter: WordFilter,
+): string {
+  let contentForAudio = message.content;
   const wordsOrPatterns = Object.keys(wordFilter);
   for (let i = 0; i < wordsOrPatterns.length; i++) {
     const wordOrPattern = wordsOrPatterns[i];
@@ -78,7 +84,7 @@ function getFilteredContent(content: string, wordFilter: WordFilter): string {
       wordOrPattern.slice(0, 1) === '/' && wordOrPattern.slice(-1) === '/';
     if (isPattern) {
       try {
-        filteredContent = filteredContent.replace(
+        contentForAudio = contentForAudio.replace(
           new RegExp(wordOrPattern.slice(1, -1), 'g'),
           substitution,
         );
@@ -86,20 +92,23 @@ function getFilteredContent(content: string, wordFilter: WordFilter): string {
         // Skip invalid regexp
       }
     } else {
-      filteredContent = filteredContent
+      contentForAudio = contentForAudio
         .split(' ')
         .map((word) => (word === wordOrPattern ? substitution : word))
         .join(' ');
     }
   }
-  return filteredContent;
+  if (pronounceNames) {
+    contentForAudio = message.authorName + ' said ' + contentForAudio;
+  }
+  return contentForAudio;
 }
 
 function renderItem(data: {
   index: number,
   item: Message & {
     audioOutputID: ?string,
-    filteredContent: string,
+    contentForAudio: string,
     messageReadSet: (read: boolean) => void,
     voiceID: ?string,
     volume: number,
@@ -110,7 +119,7 @@ function renderItem(data: {
     authorColor,
     authorName,
     content,
-    filteredContent,
+    contentForAudio,
     id,
     messageReadSet,
     read,
@@ -145,7 +154,7 @@ function renderItem(data: {
         audioOutputID={audioOutputID}
         onEnd={() => messageReadSet(true)}
         paused={read === true}
-        text={filteredContent}
+        text={contentForAudio}
         voiceID={voiceID}
         volume={Math.pow(volume, 2) / 10000} // Stretches out lower end of volume adjustment
       />

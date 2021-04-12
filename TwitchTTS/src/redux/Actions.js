@@ -72,6 +72,15 @@ export const persistentStateSet = createAction(
   }),
 );
 
+export type PronounceNamesSetAction = {
+  type: 'pronounceNames/set',
+  payload: boolean,
+};
+export const pronounceNamesSet = createAction(
+  'pronounceNames/set',
+  (enabled: boolean) => ({payload: enabled}),
+);
+
 export type SettingsVisibleSetAction = {
   type: 'settings/visible/set',
   payload: boolean,

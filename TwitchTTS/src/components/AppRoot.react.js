@@ -15,6 +15,7 @@ import AudioOutputSelector from './AudioOutputSelector.react';
 import ChannelDisplay from './ChannelDisplay.react';
 import ChannelInput from './ChannelInput.react';
 import MessageDisplay from './MessageDisplay.react';
+import PronounceNamesToggle from './PronounceNamesToggle.react';
 import SettingsVisibleToggle from './SettingsVisibleToggle.react';
 import {Subtitle, Title} from './StyledText.react';
 import VoiceSelector from './VoiceSelector.react';
@@ -46,6 +47,8 @@ export default (): React.Node => {
             <AudioOutputSelector />
             <Subtitle>{'Voices'}</Subtitle>
             <VoiceSelector />
+            <Subtitle>{'Message Context'}</Subtitle>
+            <PronounceNamesToggle />
             <Subtitle>{'Word Filters'}</Subtitle>
             <WordFilterDisplay />
             <WordFilterInput />

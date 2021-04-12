@@ -9,6 +9,7 @@ import type {
   MessageAddAction,
   MessageReadSetAction,
   PersistentStateSetAction,
+  PronounceNamesSetAction,
   SettingsVisibleSetAction,
   VoiceEnabledSetAction,
   VoiceOptionsSetAction,
@@ -25,6 +26,7 @@ import {
   messageAdd,
   messageReadSet,
   persistentStateSet,
+  pronounceNamesSet,
   settingsVisibleSet,
   voiceEnabledSet,
   voiceOptionsSet,
@@ -59,6 +61,7 @@ export type WordFilter = {[word: string]: string};
 export type PersistentState = {|
   audioOutputSelectedID: ?string,
   channelName: string,
+  pronounceNames: boolean,
   settingsVisible: boolean,
   voiceOptions: Array<
     VoiceOption & {|
@@ -82,6 +85,7 @@ const initialState: State = {
   persistent: {
     audioOutputSelectedID: null,
     channelName: '',
+    pronounceNames: true,
     settingsVisible: false,
     voiceOptions: [],
     volume: 100,
@@ -164,6 +168,12 @@ const Reducer = createReducer(initialState, {
       ...initialState.persistent,
       ...action.payload,
     };
+  },
+  [pronounceNamesSet]: (
+    state: State,
+    action: PronounceNamesSetAction,
+  ): void => {
+    state.persistent.pronounceNames = action.payload;
   },
   [settingsVisibleSet]: (
     state: State,
