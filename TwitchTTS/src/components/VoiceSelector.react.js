@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {voiceEnabledSet, voiceOptionsSet} from '../redux/Actions';
+import {voiceEnabledSet} from '../redux/Actions';
 import {voiceOptionsSelector} from '../redux/Selectors';
 
 export default (): React.Node => {
@@ -24,7 +24,7 @@ export default (): React.Node => {
   }
   return (
     <View style={styles.container}>
-      {voiceOptions.map(voiceOption => {
+      {voiceOptions.map((voiceOption) => {
         const {enabled, id, name} = voiceOption;
         const onToggle = () => dispatch(voiceEnabledSet(id, !enabled));
         return (
@@ -35,7 +35,7 @@ export default (): React.Node => {
                   // Cannot disable voice if it is the only one enabled
                   disabled={
                     enabled &&
-                    voiceOptions.filter(option => option.enabled).length < 2
+                    voiceOptions.filter((option) => option.enabled).length < 2
                   }
                   onValueChange={onToggle}
                   value={enabled}
